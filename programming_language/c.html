@@ -1,0 +1,35 @@
+<ul>
+<li><p>c函数指针</p>
+
+<ul>
+<li>指针的一种</li>
+<li><p>代码如下
+```
+// definition: return type + function name + argument type
+void (*func)(int);</p>
+
+<p>// invokation
+int a;
+(*func)(a);</p>
+
+<p>// reference a normal func
+void norm<em>func(int x)
+{
+    printf("norm</em>func: %d\n",x);
+}
+func = &norm_func;</p>
+
+<p>// array: same return type &amp; argument vector for every func
+// elements are function pointer
+int (*funcs_array[])(void) = {
+    func1,
+    func2,
+};
+```</p></li>
+</ul></li>
+<li><p>designated initializers, see https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html
+<code>
+//other elements are zero
+int a[6] = { [4] = 29, [2] = 15 };
+</code></p></li>
+</ul>

@@ -1,0 +1,982 @@
+<h1>实验楼Ubuntu课程笔记</h1>
+
+<h2>2 基本概念及操作</h2>
+
+<ul>
+<li>Linux 默认提供了 6 个纯命令行界面的 “terminal”（准确的说这里应该是 6 个 virtual consoles）来让用户登录。在物理机系统上你可以通过使用[Ctrl]+[Alt]+[F1]～[F6]进行切换，当你切换到其中一个终端后想要切换回图形界面，你可以按下[Ctrl]+[Alt]+[F7]</li>
+<li><p>终端快捷键 </p>
+
+<p><code>
+Ctrl+d  键盘输入结束或退出终端
+Ctrl+s  暂停当前程序，暂停后按下任意键恢复运行
+Ctrl+z  将当前程序放到后台运行，恢复到前台为命令fg
+Ctrl+a  将光标移至输入行头，相当于Home键
+Ctrl+e  将光标移至输入行末，相当于End键
+Ctrl+k  删除从光标所在位置到行末
+Alt+Backspace   向前删除一个单词
+Shift+PgUp  将终端显示向上滚动
+Shift+PgDn  将终端显示向下滚动
+</code></p></li>
+<li>通配符
+<code>
+字符  含义
+&lt;ul&gt;
+&lt;li&gt;匹配 0 或多个字符
+?   匹配任意一个字符
+[list]  匹配 list 中的任意单一字符
+[!list] 匹配 除list 中的任意单一字符以外的字符
+[c1-c2] 匹配 c1-c2 中的任意单一字符 如：[0-9] [a-z]
+{string1,string2,...}   匹配 string1 或 string2 (或更多)其 一字符串
+{c1..c2}    匹配 c1-c2 中全部字符 如{1..10}
+</code></li>
+</ul></li>
+</ul>
+
+<h2>3 用户及文件权限管理</h2>
+
+<ul>
+<li><p>who 命令其它常用参数</p>
+
+<p><code>
+参数  说明
+-a  打印能打印的全部
+-d  打印死掉的进程
+-m  同am i,mom likes
+-q  打印当前登录用户数及用户名
+-u  打印当前登录用户登录信息
+-r  打印运行等级
+</code></p></li>
+<li>创建用户
+<ul>
+<li><code>sudo adduser anna</code>, 这个命令不但可以添加用户到系统，同时也会默认为新用户创建 home 目录</li>
+<li><code>su -l anna</code>, 切换登录用户</li>
+</ul></li>
+<li>用户组
+<ul>
+<li><code>groups jacktroy</code>, 显示用户组</li>
+<li><code>sudo usermod -G sudo anna</code>, 将其它用户加入 sudo 用户组</li>
+<li><code>/etc/group</code> 的内容包括用户组（Group）、用户组口令、GID 及该用户组所包含的用户（User），每个用户组一条记录。格式如下：<code>group_name:password:GID:user_list</code>, 密码显示x表示不可见</li>
+</ul></li>
+<li>删除用户
+<ul>
+<li><code>sudo deluser anna --remove-home</code>, </li>
+</ul></li>
+<li>变更文件所有者
+<ul>
+<li><code>sudo chown shiyanlou iphone6</code>, 新用户为<code>shiyanlou</code>，被修改的文件为<code>iphone6</code></li>
+</ul></li>
+<li>Linux 文件权限
+<ul>
+<li><code>ls -l</code>, 显示文件夹所有文件权限</li>
+<li><code>ls -A</code>, 显示显示除了 .（当前目录）和 ..（上一级目录）之外的所有文件，包括隐藏文件（Linux 下以 . 开头的文件为隐藏文件</li>
+<li><code>ll somefile</code> or <code>ll dir</code>, 显示该文件(夹)的权限</li>
+<li><img src="3-1.png" alt="explanation 1" title="" /></li>
+<li><img src="3-2.png" alt="explanation 2" title="" /></li>
+<li>文件类型: 关于文件类型，这里有一点你必需时刻牢记 Linux 里面一切皆文件，正因为这一点才有了设备文件（ /dev 目录下有各种设备文件，大都跟具体的硬件设备相关）这一说。 socket：网络套接字，具体是什么，感兴趣的用户可以自己去了解或期待实验楼的后续相关课程。pipe 管道，这个东西很重要，我们以后将会讨论到，这里你先知道有它的存在即可。软链接文件：链接文件是分为两种的，另一种当然是“硬链接”（硬链接不常用，具体内容不作为本课程讨论重点，而软链接等同于 Windows 上的快捷方式,你记住这一点就够了）。</li>
+<li>一个目录同时具有读权限和执行权限才可以打开并查看内部文件，而一个目录要有写权限才允许在其中创建其它文件</li>
+<li><code>touch filename</code> 新建文件</li>
+<li><code>cat</code> 查看文档</li>
+<li>修改文件权限两种方式: 二进制, 加减赋值, 下面是二进制法
+<ul>
+<li><img src="3-3.png" alt="3-3" title="" /></li>
+<li>每个文件的三组权限（拥有者，所属用户组，其他用户，记住这个顺序是一定的）对应一个 " rwx "，也就是一个 “ 7 ” </li>
+<li><code>chmod 700 somefile</code>, 将拥有者设为7, 其他为0</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>4 Linux 目录结构及文件基本操作</h2>
+
+<ul>
+<li>Filesystem Hierarchy Standard DOC 
+<ul>
+<li><a href="http://refspecs.linuxfoundation.org/FHS_2.3/fhs-2.3.pdf">link</a></li>
+<li><img src="4-1.png" alt="pic" title="" /></li>
+</ul></li>
+<li><code>-</code> 表示上一次所在目录，<code>~</code> 通常表示当前用户的 <code>home</code> 目录。使用 <code>pwd</code> 命令可以获取当前所在路径（绝对路径）</li>
+<li><p>Linux 文件的基本操作</p>
+
+<ul>
+<li><code>touch</code> 新建文件</li>
+<li><code>mkdir</code> 新建目录</li>
+<li><code>cp</code> 复制一个文件到指定目录， 使用 <code>-r</code> 复制目录及所有子项目</li>
+<li><code>rm -f -r</code> 强制删除和递归删除所有子项目</li>
+<li><code>mv</code>（move or rename files）命令移动文件（剪切），取决于后一个参数， 若为目录则移动， 若为新文件名则重命名</li>
+<li><p><code>rename</code>, 重命名
+```</p>
+
+<h1>使用通配符批量创建 5 个文件:</h1>
+
+<p>$ touch file{1..5}.txt</p>
+
+<h1>批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件:</h1>
+
+<p>$ rename 's/.txt/.c/' *.txt</p>
+
+<h1>批量将这 5 个文件，文件名改为大写:</h1>
+
+<p>$ rename 'y/a-z/A-Z/' *.c        </p>
+
+<h1>确认需要重命名的文件</h1>
+
+<p>rename -n 's/Sam3/Stm32/' *.nc</p>
+
+<h1>执行修改，并列出已重命名的文件</h1>
+
+<p>rename -v 's/Sam3/Stm32/' *.nc　　
+```
+rename 是先使用第二个参数的通配符匹配所有后缀为 .txt 的文件，然后使用第一个参数提供的正则表达式将匹配的这些文件的 .txt 后缀替换为 .c</p></li>
+<li><p>使用 <code>cat</code>，<code>tac</code> 和 <code>nl</code> 命令查看文件，前两个命令都是用来打印文件内容到标准输出（终端）</p>
+
+<ul>
+<li>其中 <code>cat</code> 为正序显示，<code>tac</code> 为倒序显示， 可以加上 -n 参数显示行号</li>
+<li><code>nl</code> 命令，添加行号并打印，这是个比 <code>cat -n</code> 更专业的行号打印命令
+<code>
+-b : 指定添加行号的方式，主要有两种：
+    -b a:表示无论是否为空行，同样列出行号("cat -n"就是这种方式)
+    -b t:只列出非空行的编号并列出（默认为这种方式）
+-n : 设置行号的样式，主要有三种：
+    -n ln:在行号字段最左端显示
+    -n rn:在行号字段最右边显示，且不加 0
+    -n rz:在行号字段最右边显示，且加 0
+-w : 行号字段占用的位数(默认为 6 位)
+</code></li>
+</ul></li>
+<li><code>more</code> <code>less</code> <code>head</code> <code>tail</code> 查看文件</li>
+<li><code>file</code> 查看文件类型</li>
+</ul></li>
+</ul>
+
+<h2>5 环境变量与文件查找</h2>
+
+<ul>
+<li><code>declare</code> 命令创建一个变量名为 <code>tmp</code> 的变量</li>
+<li>使用 <code>=</code> 号赋值运算符，将变量 <code>tmp</code> 赋值为 <code>$ tmp=jack</code></li>
+<li>使用 <code>echo</code> 命令和 <code>$</code> 符号（<code>$</code> 符号用于表示引用一个变量)</li>
+<li><p>环境变量</p>
+
+<ul>
+<li>环境变量的作用域比自定义变量的要大，如 Shell 的环境变量作用于自身和它的子进程。</li>
+<li>通常我们会涉及到的变量类型有三种：
+<ul>
+<li>当前 Shell 进程私有用户自定义变量，如上面我们创建的 tmp 变量，只在当前 Shell 中有效。</li>
+<li>Shell 本身内建的变量。</li>
+<li>从自定义变量导出的环境变量。    </li>
+</ul></li>
+<li>也有三个与上述三种环境变量相关的命令：<code>set</code>，<code>env</code>，<code>export</code>, 三个命令很相似，都是用于打印环境变量信息
+<code>
+命 令    说 明
+set     显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量
+env     显示与当前用户相关的环境变量，还可以让命令在指定环境中运行
+export  显示从 Shell 中导出成环境变量的变量，也能通过它"将自定义变量导出为环境变量"!!!
+</code></li>
+<li>关于哪些变量是环境变量，可以简单地理解成在当前进程的子进程有效则为环境变量，否则不是（有些人也将所有变量统称为环境变量，只是以全局环境变量和局部环境变量进行区分，我们只要理解它们的实质区别即可）</li>
+<li>注意：为了与普通变量区分，通常我们习惯将环境变量名设为大写。</li>
+<li>按变量的生存周期来划分，Linux 变量可分为两类：
+1.永久的：需要修改配置文件，变量永久生效；
+2.临时的：使用 <code>export</code> 命令行声明即可，变量在关闭 shell 时失效。</li>
+<li><code>/etc/bashrc</code>（有的 Linux 没有这个文件） 和 <code>/etc/profile</code> ，它们分别存放的是 shell 变量和环境变量, 每个用户目录下的一个隐藏文件 <code>.profile</code> 只对当前用户永久生效, 而写在 <code>/etc/profile</code> 里面的是对所有用户永久生效 </li>
+<li>在每个用户的 home 目录中有一个 Shell 每次启动时会默认执行一个配置脚本，以初始化环境，包括添加一些用户自定义环境变量等等。zsh 的配置文件是 <code>.zshrc</code>，相应 Bash 的配置文件为 <code>.bashrc</code> 。它们在 etc 下还都有一个或多个全局的配置文件，不过我们一般只修改用户目录下的配置文件。</li>
+<li>我们可以简单地使用下面命令直接添加内容到 .zshrc 中：
+<code>
+$ echo "PATH=$PATH:/home/shiyanlou/mybin" &gt;&gt; .zshrc
+</code></li>
+<li>上述命令中 >> 表示将标准输出以追加的方式重定向到一个文件中，注意前面用到的 > 是以覆盖的方式重定向到一个文件中</li>
+<li>可以使用 <code>source</code> 命令来让修改后的文件立即生效</li>
+</ul></li>
+<li><p>搜索文件</p>
+
+<ul>
+<li>与搜索相关的命令常用的有 <code>whereis</code>，<code>which</code>，<code>find</code> 和 <code>locate</code>
+<ul>
+<li><code>whereis</code> 简单快速, 这个搜索很快，因为它并没有从硬盘中依次查找，而是直接从数据库中查询。whereis 只能搜索二进制文件(-b)，man 帮助文件(-m)和源代码文件(-s)。如果想要获得更全面的搜索结果可以使用 locate 命令。</li>
+<li><code>locate</code> 快而全, 通过“ /var/lib/mlocate/mlocate.db ”数据库查找，不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行 <code>updatedb</code> 命令更新一次，所以有时候你刚添加的文件，它可能会找不到，需要手动执行一次 <code>updatedb</code> 命令（在我们的环境中必须先执行一次该命令）</li>
+<li><code>which</code> 小而精, <code>which</code> 本身是 Shell 内建的一个命令，我们通常使用 <code>which</code> 来确定是否安装了某个指定的软件，因为它只从 <code>PATH</code> 环境变量指定的路径中去搜索命令：</li>
+<li><code>find</code> 精而细, <code>find</code> 应该是这几个命令中最强大的了，它不但可以通过文件类型、文件名进行查找而且可以根据文件的属性（如文件的时间戳，文件的权限等）进行搜索。 
+<code>
+sudo find /etc/ -name interfaces
+# find 目录 -name 名字， 以上命令表示去 /etc/ 目录下面 ，搜索名字叫做 interfaces 的文件或者目录
+</code></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>7  文件打包与解压缩</h2>
+
+<ul>
+<li>常用的压缩包文件格式
+<code>
+文件后缀名 说明
+*.zip   zip 程序打包压缩的文件
+*.rar   rar 程序压缩的文件
+*.7z    7zip 程序压缩的文件
+*.tar   tar 程序打包，未压缩的文件
+*.gz    gzip 程序（GNU zip）压缩的文件
+*.xz    xz 程序压缩的文件
+*.bz2   bzip2 程序压缩的文件
+*.tar.gz    tar 打包，gzip 程序压缩的文件
+*.tar.xz    tar 打包，xz 程序压缩的文件
+*tar.bz2    tar 打包，bzip2 程序压缩的文件
+*.tar.7z    tar 打包，7z 程序压缩的文件
+</code></li>
+<li><p>zip 压缩打包程序
+<code>
+$ zip -r -9 -q -o shiyanlou_9.zip /home/shiyanlou -x ~/*.zip
+</code>
+第一行命令中，-r 参数表示递归打包包含子目录的全部内容，下一个参数用于设置压缩级别 -[1-9]，1 表   示最快压缩但体积大，9 表示体积最小但耗时最久, -q 参数表示为安静模式，即不向屏幕输出信息，-o，表   示输出文件，需在其后紧跟打包输出文件名, 最后那个 -x 是为了排除我们上一次创建的 zip 文件，否则又  会被打包进这一次的压缩文件中，注意：这里只能使用绝对路径，否则不起作用。</p>
+
+<p><code>
+$ du -h -d 0 *.zip ~ | sort
+</code>
+h， --human-readable（顾名思义，你可以试试不加的情况）, d， --max-depth（所查看文件的深度）</p>
+
+<p><code>
+$ zip -r -e -o shiyanlou_encryption.zip /home/shiyanlou
+</code>
+使用 -e 参数可以创建加密压缩包</p>
+
+<p><code>
+$ zip -r -l -o shiyanlou.zip /home/shiyanlou
+</code>
+需要加上 -l 参数将 LF 转换为 CR+LF 。</p>
+
+<p><code>
+$ unzip -q shiyanlou.zip -d ziptest
+</code>
+使用安静模式，将文件解压到指定目录</p>
+
+<p><code>
+$ unzip -l shiyanlou.zip
+</code>
+不想解压只想查看压缩包的内容你可以使用 -l 参数</p>
+
+<p><code>
+$ unzip -O GBK 中文压缩文件.zip
+</code>
+使用 -O（英文字母，大写 o）参数指定编码类型</p></li>
+<li><p>tar打包工具
+在 Linux 上面更常用的是 tar 工具，tar 原本只是一个打包工具，只是同时还是实现了对 7z、gzip、xz、bzip2 等工具的支持，这些压缩工具本身只能实现对文件或目录（单独压缩目录中的文件）的压缩，没有实现对文件的打包压缩</p>
+
+<p><code>
+$ tar -cf shiyanlou.tar ~
+</code>
+创建一个 tar 包, -c 表示创建一个 tar 包文件，-f 用于指定创建的文件名，注意文件名必须紧跟在 -f 参数之后</p>
+
+<p><code>
+$ mkdir tardir
+$ tar -xf shiyanlou.tar -C tardir
+</code>
+解包一个文件（-x 参数）到指定路径的已存在目录（-C 参数）</p>
+
+<p><code>
+$ tar -tf shiyanlou.tar
+</code>
+只查看不解包文件 -t 参数</p>
+
+<p><code>
+$ tar -cphf etc.tar /etc
+</code>
+保留文件属性和跟随链接（符号链接或软链接），有时候我们使用 tar 备份文件当你在其他主机还原时希望保留文件的属性（-p 参数）和备份链接指向的源文件而不是链接本身（-h 参数）</p>
+
+<p>对于创建不同的压缩格式的文件，对于 tar 来说是相当简单的，需要的只是换一个参数
+<code>
+压缩文件格式  参数
+*.tar.gz    -z
+*.tar.xz    -J
+*tar.bz2    -j
+</code></p></li>
+<li><p>常用命令：
+<code>
+zip：
+打包 ：zip something.zip something （目录请加 -r 参数）
+解包：unzip something
+指定路径：-d 参数
+tar：
+打包：tar -zcvf something.tar something
+解包：tar -zxvf something.tar
+指定路径：-C 参数
+</code></p></li>
+</ul>
+
+<h2>8  文件系统操作与磁盘管理</h2>
+
+<ul>
+<li>使用 df 命令查看磁盘的容量 <code>$ df</code></li>
+<li>使用 du 命令查看目录的容量 <code>$ du</code>, </li>
+<li><p>mount 命令</p>
+
+<ul>
+<li>使用 <code>mount</code>来查看下主机已经挂载的文件系统
+<code>
+$ mount
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=4008432k,nr_inodes=1002108,mode=755)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,noexec,relatime,size=806364k,mode=755)
+/dev/sda9 on / type ext4 (rw,relatime,errors=remount-ro,data=ordered)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
+tmpfs on /sys/fs/cgroup type tmpfs (ro,nosuid,nodev,noexec,mode=755)
+cgroup on /sys/fs/cgroup/systemd type cgroup (rw,nosuid,nodev,noexec,relatime,xattr,release_agent=/lib/systemd/systemd-cgroups-agent,name=systemd)
+pstore on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+efivarfs on /sys/firmware/efi/efivars type efivarfs (rw,nosuid,nodev,noexec,relatime)
+cgroup on /sys/fs/cgroup/perf_event type cgroup (rw,nosuid,nodev,noexec,relatime,perf_event)
+cgroup on /sys/fs/cgroup/freezer type cgroup (rw,nosuid,nodev,noexec,relatime,freezer)
+cgroup on /sys/fs/cgroup/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio)
+cgroup on /sys/fs/cgroup/net_cls,net_prio type cgroup (rw,nosuid,nodev,noexec,relatime,net_cls,net_prio)
+cgroup on /sys/fs/cgroup/devices type cgroup (rw,nosuid,nodev,noexec,relatime,devices)
+cgroup on /sys/fs/cgroup/pids type cgroup (rw,nosuid,nodev,noexec,relatime,pids)
+cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup (rw,nosuid,nodev,noexec,relatime,cpu,cpuacct)
+cgroup on /sys/fs/cgroup/memory type cgroup (rw,nosuid,nodev,noexec,relatime,memory)
+cgroup on /sys/fs/cgroup/cpuset type cgroup (rw,nosuid,nodev,noexec,relatime,cpuset)
+cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=31,pgrp=1,timeout=0,minproto=5,maxproto=5,direct)
+mqueue on /dev/mqueue type mqueue (rw,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,relatime)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,relatime)
+/dev/sda10 on /home type ext4 (rw,relatime,data=ordered)
+/dev/sda2 on /boot/efi type vfat (rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,relatime)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=806364k,mode=700,uid=1000,gid=1000)
+gvfsd-fuse on /run/user/1000/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+/dev/sda3 on /media/jacktroy/CS type fuseblk (rw,nosuid,nodev,relatime,user_id=0,group_id=0,default_permissions,allow_other,blksize=4096,uhelper=udisks2)
+</code>
+输出的结果中每一行表示一个设备或虚拟设备,每一行最前面是设备名，然后是 on 后面是挂载点，type 后面表示文件系统类型，再后面是挂载选项（比如可以在挂载时设定以只读方式挂载等等）</li>
+</ul>
+
+<p><code>
+mount [-o [操作选项]] [-t 文件系统类型] [-w|--rw|--ro] [文件系统源] [挂载点]
+</code>
+挂载硬盘</p>
+
+<p><code>
+$ sudo umount /mnt
+</code>
+使用 umount 命令从挂载点卸载已挂载磁盘</p>
+
+<p><code>
+$ sudo mkfs.ext4 virtual.img
+</code>
+使用 mkfs 命令格式化磁盘</p>
+
+<p>```</p>
+
+<h1>查看硬盘分区表信息</h1>
+
+<p>$ sudo fdisk -l</p>
+
+<h1>进入磁盘分区模式</h1>
+
+<p><p>$ sudo fdisk virtual.img
+```
+使用 fdisk 为磁盘分区</p></li>
+</ul></p>
+
+<h2>9  Linux下的帮助命令</h2>
+
+<ul>
+<li><p>内建命令实际上是 shell 程序的一部分，其中包含的是一些比较简单的 Linux 系统命令，这些命令是写在bash源码的builtins里面的，并由 shell 程序识别并在 shell 程序内部完成运行，通常在 Linux 系统加载运行时 shell 就被加载并驻留在系统内存中。而且解析内部命令 shell 不需要创建子进程，因此其执行速度比外部命令快。比如：history、cd、exit 等等。</p></li>
+<li><p>外部命令是 Linux 系统中的实用程序部分，因为实用程序的功能通常都比较强大，所以其包含的程序量也会很大，在系统加载时并不随系统一起被加载到内存中，而是在需要时才将其调用内存。虽然其不包含在 shell 中，但是其命令执行过程是由 shell 程序控制的。外部命令是在 Bash 之外额外安装的，通常放在/bin，/usr/bin，/sbin，/usr/sbin等等。比如：ls、vi等。</p></li>
+<li><p>内建命令 <code>help exit</code>, 外部命令 <code>ls --help</code></p></li>
+<li>获得更详细的帮助, <code>man ls</code>, <code>info ls</code></li>
+</ul>
+
+<h2>10  Linux任务计划crontab</h2>
+
+<ul>
+<li><code>crontab</code> 命令常见于 Unix 和类 Unix 的操作系统之中（Linux 就属于类 Unix 操作系统），用于设置周期性被执行的指令。 <code>crontab</code> 储存的指令被守护进程激活， <code>crond</code> 为其守护进程，<code>crond</code> 常常在后台运行，每一分钟会检查一次是否有预定的作业需要执行。</li>
+<li><p>使用命令 <code>crontab -e</code> 打开 <code>crontab</code> 脚本, 添加任务, 任务格式如下
+```</p>
+
+<h1>Example of job definition:</h1>
+
+<h1>.---------------- minute (0 - 59)</h1>
+
+<h1>|  .------------- hour (0 - 23)</h1>
+
+<h1>|  |  .---------- day of month (1 - 31)</h1>
+
+<h1>|  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</h1>
+
+<h1>|  |  |  |  .---- day of week (0 - 6) (Sunday=0 for 7) OR sun,mon,tue,wed,thu, fri,sat</h1>
+
+<h1>|  |  |  |  |</h1>
+
+<h1>f1 f2 f3 f4 f5 user-name command to be executed</h1>
+
+<p><code>
+其中 f1 是表示分钟，f2 表示小时，f3 表示一个月份中的第几日，f4 表示月份，f5 表示一个星期中的第几天。program 表示要执行的程式。
+当 f1 为 * 时表示每分钟都要执行 program，f2 为 * 时表示每小时都要执行程式，其余类推
+当 f1 为 a-b 时表示从第 a 分钟到第 b 分钟这段时间内要执行，f2 为 a-b 时表示从第 a 到第 b 小时都要执行，其余类推
+当 f1 为 */n 时表示每 n 分钟个时间间隔执行一次，f2 为 */n 表示每 n 小时个时间间隔执行一次，其余类推
+当 f1 为 a, b, c,... 时表示第 a, b, c,... 分钟要执行，f2 为 a, b, c,... 时表示第 a, b, c...个小时要执行，其余类推
+使用者也可以将所有的设定先存放在档案 file 中，用 crontab file 的方式来设定时程表。
+例子:
+</code>
+每月每天每小时的第 0 分钟执行一次 /bin/ls :
+0 * * * * /bin/ls</p>
+
+<p>在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup :
+*/20 6-12 * 12 * /usr/bin/backup</p>
+
+<p>周一到周五每天下午 5:00 寄一封信给 alex<em>mail</em>name :
+0 17 * * 1-5 mail -s "hi" alex<em>mail</em>name &lt; /tmp/maildata</p>
+
+<p>每月每天的午夜 0 点 20 分, 2 点 20 分, 4 点 20 分....执行 echo "haha"
+20 0-23/2 * * * echo "haha"</p>
+
+<p>晚上11点到早上8点之间每两个小时，早上8点
+0 23-7/2，8 * * * date</p>
+
+<p>创建以当前日期为文件名的文件
+*/1 * * * * touch /home/shiyanlou/$(date +\%Y\%m\%d\%H\%M\%S)
+```    </p>
+
+<p>关于 <code>date</code> 命令, <code>date</code> 能用来显示或设定系统的日期和时间，在显示方面，使用者能设定欲显示的格式，格式设定为一个加号后接数个标记.</p>
+
+<p>“ % ” 在 crontab 文件中，有结束命令行、换行、重定向的作用，前面加 ” \ ” 符号转意，否则，“ % ” 符号将执行其结束命令行或者换行的作用，并且其后的内容会被做为标准输入发送给前面的命令。</p></li>
+<li><p>使用命令 <code>crontab -l</code> 查询任务</p></li>
+<li><p>检查 <code>crond</code> 是否在后台运行
+<code>
+$ ps aux | grep cron
+or
+$ pgrep cron
+</code></p></li>
+<li><p>执行任务命令之后在,会在日志中的留下信息,使用命令查询 <code>sudo tail -f /var/log/syslog</code></p></li>
+<li>不需要这个任务的时候我们可以使用这么一个命令去删除任务 <code>crontab -r</code></li>
+<li><code>crontab</code> 深入
+<ul>
+<li>每个用户使用 <code>crontab -e</code> 添加计划任务，都会在 <code>/var/spool/cron/crontabs</code> 中添加一个该用户自己的任务文档，这样目的是为了隔离。</li>
+<li>系统级别的定时任务, 只需要以 sudo 权限编辑 /etc/crontab</li>
+<li>/etc/cron.daily，目录下的脚本会每天执行一次，在每天的6点25分时运行；</li>
+<li>/etc/cron.hourly，目录下的脚本会每个小时执行一次，在每小时的17分钟时运行；</li>
+<li>/etc/cron.monthly，目录下的脚本会每月执行一次，在每月1号的6点52分时运行；</li>
+<li>/etc/cron.weekly，目录下的脚本会每周执行一次，在每周第七天的6点47分时运行；</li>
+</ul></li>
+</ul>
+
+<h2>12  命令执行顺序控制与管道</h2>
+
+<ul>
+<li>顺序执行多条命令，可以使用 <code>;</code> 来完成， i.e. <code>$ sudo apt-get update;sudo apt-get install some-tool;some-tool</code></li>
+<li>有选择的执行命令, <code>&amp;&amp;</code> 表示如果前面的命令执行结果（不是表示终端输出的内容，而是表示命令执行状态的结果）返回0则执行后面的，否则不执行</li>
+<li><code>||</code>在这里就是与<code>&amp;&amp;</code>相反的控制效果，当上一条命令执行结果为≠0($?≠0)时则执行它后面的命令</li>
+<li><p>管道 </p>
+
+<ul>
+<li><code>|</code> ， 匿名管道</li>
+<li><p><code>cut</code>, 打印每一行的某一字段
+<code>
+$ cut /etc/passwd -d ':' -f 1,6
+</code>
+打印/etc/passwd文件中以:为分隔符的第1个字段和第6个字段分别表示用户名和其家目录</p>
+
+<p>```</p>
+
+<h1>前五个（包含第五个）</h1>
+
+<p>$ cut /etc/passwd -c -5</p>
+
+<h1>前五个之后的（包含第五个）</h1>
+
+<p>$ cut /etc/passwd -c 5-</p>
+
+<h1>第五个</h1>
+
+<p>$ cut /etc/passwd -c 5</p>
+
+<h1>2到5之间的（包含第五个）</h1>
+
+<p>$ cut /etc/passwd -c 2-5 <br />
+```
+打印/etc/passwd文件中每一行的前N个字符：</p></li>
+<li><p><code>grep</code>, 一般形式为<code>grep [命令选项]... 用于匹配的表达式 [文件]...</code></p></li>
+<li><code>wc</code> 命令用于统计并输出一个文件中行、单词和字节的数目
+<code>
+# 行数
+$ wc -l /etc/passwd
+# 单词数
+$ wc -w /etc/passwd
+# 字节数
+$ wc -c /etc/passwd
+# 字符数
+$ wc -m /etc/passwd
+# 最长行字节数
+$ wc -L /etc/passwd
+</code></li>
+<li><p><code>sort</code> 排序命令
+```
+默认为字典排序：
+$ cat /etc/passswd | sort</p>
+
+<p>反转排序：
+$ cat /etc/passwd | sort -r</p>
+
+<p>按特定字段排序：
+$ cat /etc/passwd | sort -t':' -k 3
+上面的-t参数用于指定字段的分隔符，这里是以":"作为分隔符；-k 字段号用于指定对哪一个字段进行排序。
+这里/etc/passwd文件的第三个字段为数字，默认情况下是以字典序排序的，如果要按照数字排序就要加上-n参数：
+$ cat /etc/passwd | sort -t':' -k 3 -n</p>
+
+<p>```</p></li>
+<li><p><code>uniq</code> 去重命令, 只能去连续重复的行，不是全文去重
+我们可以使用 <code>history</code> 命令查看最近执行过的命令, 如果只想查看使用了那个命令而不需要知道具体干了什么，那么可以去掉命令后面的参数然后去掉重复的命令
+<code>
+$ history | cut -c 8- | cut -d ' ' -f 1 | sort | uniq
+</code></p>
+
+<p>也可以输出重复行
+```</p>
+
+<h1>输出重复过的行（重复的只输出一个）及重复次数</h1>
+
+<p>$ history | cut -c 8- | cut -d ' ' -f 1 | sort | uniq -dc</p>
+
+<h1>输出所有重复的行</h1>
+
+<p>$ history | cut -c 8- | cut -d ' ' -f 1 | sort | uniq -D
+```</p></li>
+</ul></li>
+</ul>
+
+<h2>13  简单的文本处理</h2>
+
+<ul>
+<li><p><code>tr</code> 命令可以用来删除一段文本信息中的某些文字
+```
+-d  删除和set1匹配的字符，注意不是全词匹配也不是按字符顺序匹配
+-s  去除set1指定的在输入文本中连续并重复的字符</p>
+
+<h1>删除 "hello shiyanlou" 中所有的'o','l','h'</h1>
+
+<p>$ echo 'hello shiyanlou' | tr -d 'olh'</p>
+
+<h1>将"hello" 中的ll,去重为一个l</h1>
+
+<p>$ echo 'hello' | tr -s 'l'</p>
+
+<h1>将输入文本，全部转换为大写或小写输出</h1>
+
+<p>$ cat 'input some text here' | tr '[:lower:]' '[:upper:]'</p>
+
+<h1>上面的'[:lower:]' '[:upper:]'你也可以简单的写作'[a-z]' '[A-Z]',当然反过来将大写变小写也是可以的</h1>
+
+<p>```</p></li>
+<li><p><code>col</code> 命令可以将Tab换成对等数量的空格键，或反转这个操作。
+<code>
+-x  将Tab转换为空格
+-h  将空格转换为Tab（默认选项）
+</code></p></li>
+<li><p><code>join</code> 将两个文件中包含相同内容的那一行合并在一起, key可以由分隔符定义（类似数据库的join）
+<code>
+-t  指定分隔符，默认为空格
+-i  忽略大小写的差异
+-1  指明第一个文件要用哪个字段来对比，默认对比第一个字段
+-2  指明第二个文件要用哪个字段来对比，默认对比第一个字段
+</code></p></li>
+<li><p><code>paste</code> 在不对比数据的情况下，简单地将多个文件合并一起，以Tab隔开。
+```
+使用方式：
+paste [option] file...</p>
+
+<p>常用的选项有：
+选项  说明
+-d  指定合并的分隔符，默认为Tab
+-s  不合并到一行，每个文件为一行
+```</p></li>
+</ul>
+
+<h2>14  数据流重定向</h2>
+
+<p><code>
+文件描述符 设备文件    说明
+0   /dev/stdin  标准输入
+1   /dev/stdout 标准输出
+2   /dev/stderr 标准错误
+</code></p>
+
+<ul>
+<li><code>command &gt; file</code>, 命令的stdout重定位到文件 </li>
+<li><code>command &lt; file</code>, 文件作为命令的输入 </li>
+<li><code>&gt;&gt;</code>, stdout追加到一个文件的末端</li>
+<li><code>&amp;&gt;</code>, stdout &amp; stderr 都重定位到文件</li>
+<li><p><code>&gt;&amp;fd</code>, stdout 重定位到文件描述符
+```</p>
+
+<h1>将标准错误重定向到标准输出，再将标准0输出重定向到文件，注意要将重定向到文件写到前面</h1>
+
+<p>$ cat Documents/test.c hello.c >somefile  2>&amp;1</p>
+
+<h1>或者只用bash提供的特殊的重定向符号"&amp;"将标准错误和标准输出同时重定向到文件</h1>
+
+<p>$ cat Documents/test.c hello.c &amp;>somefilehell
+```
+注意你应该在输出重定向文件描述符前加上&amp;,否则shell会当做重定向到一个文件名为1的文件中</p></li>
+<li><p><code>tee</code>， 将输出重定向到文件,也将信息打印在终端， i.e. <code>$ echo 'hello shiyanlou' | tee hello</code></p></li>
+<li><code>exec</code> 命令的作用是使用指定的命令替换当前的 Shell，及使用一个进程替换当前进程，或者指定新的重定向
+<code>
+# 先开启一个子 Shell
+$ zsh
+# 使用exec替换当前进程的重定向，将标准输出重定向到一个文件
+$ exec 1&gt;somefile
+# 后面你执行的命令的输出都将被重定向到文件中,直到你退出当前子shell，或取消exec的重定向（后面将告诉你怎么做）
+$ ls
+$ exit
+$ cat somefile
+</code></li>
+<li>可以使用下面命令查看当前 Shell 进程中打开的文件描述符：<code>$ cd /dev/fd/;ls -Al</code></li>
+<li><p>使用 <code>exec</code> 命令可以创建新的文件描述符：
+```
+$ exec 3>somefile</p>
+
+<h1>先进入目录，再查看，否则你可能不能得到正确的结果，然后再回到上一次的目录</h1>
+
+<p>$ cd /dev/fd/;ls -Al;cd -</p>
+
+<h1>注意下面的命令>与&amp;之间不应该有空格，如果有空格则会出错</h1>
+
+<p>$ echo "this is test" >&amp;3
+$ cat somefile
+$ exit
+```</p></li>
+<li><p>关闭上面打开的文件描述符， <code>$ exec 3&gt;&amp;-</code></p></li>
+<li><p>屏蔽命令的输出</p>
+
+<ul>
+<li>在类 UNIX 系统中，/dev/null，或称空设备，是一个特殊的设备文件，它通常被用于丢弃不需要的输出流，或作为用于输入流的空文件，这些操作通常由重定向完成。读取它则会立即得到一个EOF</li>
+<li>我们可以利用设个/dev/null屏蔽命令的输出：<code>$ cat Documents/test.c nefile 1&gt;/dev/null 2&gt;&amp;1</code></li>
+</ul></li>
+<li><p>ex: 现在有一些命令的记录（来自<code>history</code>），现在需要你从里面找出出现频率次数前3的命令
+<code>$ cut data1 -c 8- | cut -d ' ' -f 1 | sort | uniq -dc | sort -k 1 -n -r | head -n 3</code></p></li>
+</ul>
+
+<h2>16  正则表达式基础</h2>
+
+<p>regex 基本语法
+|字符 |描述|
+| :---------- | :----------  |
+|\  |将下一个字符标记为一个特殊字符、或一个原义字符。例如，“n”匹配字符“n”。“\n”匹配一个换行符。序列“\”匹配“\”而“(”则匹配“(”。||
+|^  |匹配输入字符串的开始位置。|
+|$  |匹配输入字符串的结束位置。|
+|{n}    |n是一个非负整数。匹配确定的n次。例如，“o{2}”不能匹配“Bob”中的“o”，但是能匹配“food”中的两个o。|
+|{n,}   |n是一个非负整数。至少匹配n次。例如，“o{2,}”不能匹配“Bob”中的“o”，但能匹配“foooood”中的所有o。“o{1,}”等价于“o+”。“o{0,}”则等价于“o<em>”。|
+|{n,m}  |m和n均为非负整数，其中n&lt;=m。最少匹配n次且最多匹配m次。例如，“o{1,3}”将匹配“fooooood”中的前三个o。“o{0,1}”等价于“o?”。请注意在逗号和两个数之间不能有空格。|
+|</em>  |匹配前面的子表达式零次或多次。例如，zo<em>能匹配“z”、“zo”以及“zoo”。</em>等价于{0,}。|
+|+  |匹配前面的子表达式一次或多次。例如，“zo+”能匹配“zo”以及“zoo”，但不能匹配“z”。+等价于{1,}。|
+|?  |匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”中的“do”。?等价于{0,1}。|
+|?  |当该字符紧跟在任何一个其他限制符（*,+,?，{n}，{n,}，{n,m}）后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。例如，对于字符串“oooo”，“o+?”将匹配单个“o”，而“o+”将匹配所有“o”。|
+|.  |匹配除“\n”之外的任何单个字符。要匹配包括“\n”在内的任何字符，请使用像“(.｜\n)”的模式。|
+|(pattern)  |匹配pattern并获取这一匹配的子字符串。该子字符串用于向后引用。要匹配圆括号字符，请使用“(”或“)”。|
+|x\|y   |匹配x或y。例如，“z｜food”能匹配“z”或“food”。“(z｜f)ood”则匹配“zood”或“food”。|
+|[xyz]  |字符集合（character class）。匹配所包含的任意一个字符。例如，“[abc]”可以匹配“plain”中的“a”。其中特殊字符仅有反斜线\保持特殊含义，用于转义字符。其它特殊字符如星号、加号、各种括号等均作为普通字符。脱字符^如果出现在首位则表示负值字符集合；如果出现在字符串中间就仅作为普通字符。连字符 - 如果出现在字符串中间表示字符范围描述；如果如果出现在首位则仅作为普通字符。|
+|[^xyz] |排除型（negate）字符集合。匹配未列出的任意字符。例如，“[^abc]”可以匹配“plain”中的“plin”。|
+|[a-z]  |字符范围。匹配指定范围内的任意字符。例如，“[a-z]”可以匹配“a”到“z”范围内的任意小写字母字符。|
+|[^a-z] |排除型的字符范围。匹配任何不在指定范围内的任意字符。例如，“[^a-z]”可以匹配任何不在“a”到“z”范围内的任意字符。|</p>
+
+<p>优先级</p>
+
+<p>优先级为从上到下从左到右，依次降低：</p>
+
+<p>|运算符  |说明|
+| :---------- | :----------  |
+|\  |转义符|
+|(), (?:), (?=), [] |括号和中括号|
+|*、+、?、{n}、{n,}、{n,m} |限定符|
+|^、$、\任何元字符   |定位点和序列|
+|\| 　|选择|</p>
+
+<ul>
+<li><p><code>grep</code> 命令</p>
+
+<ul>
+<li><p>参数说明
+<code>
+参数  说明
+-b  将二进制文件作为文本来进行匹配
+-c  统计以模式匹配的数目
+-i  忽略大小写
+-n  显示匹配文本所在行的行号
+-v  反选，输出不匹配行的内容
+-r  递归匹配查找
+-A n    n为正整数，表示after的意思，除了列出匹配行之外，还列出后面的n行
+-B n    n为正整数，表示before的意思，除了列出匹配行之外，还列出前面的n行
+--color=auto    将输出中的匹配项设置为自动颜色显示
+</code></p></li>
+<li><p>使用基本正则表达式，BRE如下</p></li>
+<li><p>位置，查找/etc/group文件中以"shiyanlou"为开头的行
+<code>
+$ grep 'shiyanlou' /etc/group
+$ grep '^shiyanlou' /etc/group
+</code></p></li>
+<li><p>数量
+```</p>
+
+<h1>将匹配以'z'开头以'o'结尾的所有字符串！！！！</h1>
+
+<p>$ echo 'zero\nzo\nzoo' | grep 'z.*o'</p>
+
+<h1>将匹配以'z'开头以'o'结尾，中间包含一个任意字符的字符串</h1>
+
+<p>$ echo 'zero\nzo\nzoo' | grep 'z.o'</p>
+
+<h1>将匹配以'z'开头,以任意多个'o'结尾的字符串</h1>
+
+<p>$ echo 'zero\nzo\nzoo' | grep 'zo*'
+```</p></li>
+<li><p>选择, 结果以颜色标注
+```</p>
+
+<h1>grep默认是区分大小写的，这里将匹配所有的小写字母</h1>
+
+<p>$ echo '1234\nabcd' | grep '[a-z]'</p>
+
+<h1>将匹配所有的数字</h1>
+
+<p>$ echo '1234\nabcd' | grep '[0-9]'</p>
+
+<h1>将匹配所有的数字</h1>
+
+<p>$ echo '1234\nabcd' | grep '[[:digit:]]'</p>
+
+<h1>将匹配所有的小写字母</h1>
+
+<p>$ echo '1234\nabcd' | grep '[[:lower:]]'</p>
+
+<h1>将匹配所有的大写字母</h1>
+
+<p>$ echo '1234\nabcd' | grep '[[:upper:]]'</p>
+
+<h1>将匹配所有的字母和数字，包括0-9,a-z,A-Z</h1>
+
+<p>$ echo '1234\nabcd' | grep '[[:alnum:]]'</p>
+
+<h1>将匹配所有的字母</h1>
+
+<p>$ echo '1234\nabcd' | grep '[[:alpha:]]'
+```</p></li>
+<li><p>下面包含完整的特殊符号及说明：
+<code>
+特殊符号    说明
+[:alnum:]   代表英文大小写字母及数字，亦即 0-9, A-Z, a-z
+[:alpha:]   代表任何英文大小写字母，亦即 A-Z, a-z
+[:blank:]   代表空白键与 [Tab] 按键两者
+[:cntrl:]   代表键盘上面的控制按键，亦即包括 CR, LF, Tab, Del.. 等等
+[:digit:]   代表数字而已，亦即 0-9
+[:graph:]   除了空白字节 (空白键与 [Tab] 按键) 外的其他所有按键
+[:lower:]   代表小写字母，亦即 a-z
+[:print:]   代表任何可以被列印出来的字符
+[:punct:]   代表标点符号 (punctuation symbol)，亦即：" ' ? ! ; : # $...
+[:upper:]   代表大写字母，亦即 A-Z
+[:space:]   任何会产生空白的字符，包括空白键, [Tab], CR 等等
+[:xdigit:]  代表 16 进位的数字类型，因此包括： 0-9, A-F, a-f 的数字与字节
+</code>
+注意：之所以要使用特殊符号，是因为上面的[a-z]不是在所有情况下都管用，这还与主机当前的语系有关，即设置在LANG环境变量的值，zh_CN.UTF-8的话[a-z]，即为所有小写字母，其它语系可能是大小写交替的如，"a A b B...z Z"，[a-z]中就可能包含大写字母。所以在使用[a-z]时请确保当前语系的影响，使用[:lower:]则不会有这个问题。</p></li>
+<li><p>排除字符，<code>$ echo 'geek\ngood' | grep '[^o]'</code>， 注意:当^放到中括号内为排除字符，否则表示行首。</p></li>
+<li><p>使用扩展正则表达式，ERE如下</p>
+
+<p>要通过grep使用扩展正则表达式需要加上-E参数，或使用egrep</p>
+
+<ul>
+<li>数量
+<code>
+# 只匹配"zo"
+$ echo 'zero\nzo\nzoo' | grep -E 'zo{1}'
+# 匹配以"zo"开头单词，o的数量大于等于1
+$ echo 'zero\nzo\nzoo' | grep -E 'zo{1,}'
+</code>
+注意：推荐掌握{n,m}即可，+,?,*，这几个不太直观，且容易弄混淆。</li>
+<li>选择
+<code>
+# 匹配"www.shiyanlou.com"和"www.google.com"
+$ echo 'www.shiyanlou.com\nwww.baidu.com\nwww.google.com' | grep -E     'www\.      (shiyanlou|google)\.com'
+# 或者匹配不包含"baidu"的内容
+$ echo 'www.shiyanlou.com\nwww.baidu.com\nwww.google.com' | grep -Ev        'www\.baidu\.com'
+</code>
+注意：因为.号有特殊含义，所以需要转义。</li>
+</ul></li>
+</ul></li>
+<li><p><code>sed</code> 流编辑器
+```
+sed [参数]... [执行命令] [输入文件]...</p>
+
+<h1>形如：</h1>
+
+<p>$ sed -i '1s/sad/happy/' test # 表示将test文件中第一行的"sad"替换为"happy"
+```</p></li>
+<li><p><code>awk</code> 文本处理语言</p></li>
+</ul>
+
+<h2>18  Linux下软件安装</h2>
+
+<p>通常 Linux 上的软件安装主要有四种方式：
+1. 在线安装
+2. 从磁盘安装deb软件包
+3. 从二进制软件包安装
+4. 从源代码编译安装</p>
+
+<ul>
+<li><p>apt包管理工具, 在线安装</p>
+
+<ul>
+<li>当你在执行安装操作时，首先apt-get 工具会在本地的一个数据库中搜索关于 w3m 软件的相关信息，并根据这些信息在相关的服务器上下载软件安装</li>
+<li>需要定期从服务器上下载一个软件包列表，使用 sudo apt-get update 命令来保持本地的软件包列表是最新的（有时你也需要手动执行这个操作，比如更换了软件源），而这个表里会有软件依赖信息的记录</li>
+<li><p><code>apt-get</code>
+```
+工具  说明
+install 其后加上软件包名，用于安装一个软件包
+update  从软件源镜像服务器上下载/更新用于更新本地软件源的软件包列表
+upgrade 升级本地可更新的全部软件包，但存在依赖问题时将不会升级，通常会在更新之前执行一次        update
+dist-upgrade    解决依赖关系并升级(存在一定危险性)
+remove  移除已安装的软件包，包括与被移除软件包有依赖关系的软件包，但不包含软件包的配置文件
+autoremove  移除之前被其他软件包依赖，但现在不再被使用的软件包
+purge   与remove相同，但会完全移除软件包，包含其配置文件
+clean   移除下载到本地的已经安装的软件包，默认保存在/var/cache/apt/archives/
+autoclean   移除已安装的软件的旧版本软件包</p>
+
+<p>参数  说明
+-y  自动回应是否安装软件包的选项，在一些自动化安装脚本中使用这个参数将十分有用
+-s  模拟安装
+-q  静默安装方式，指定多个q或者-q=#,#表示数字，用于设定静默级别，这在你不想要在安装软件包时     屏幕输出过多时很有用
+-f  修复损坏的依赖关系
+-d  只下载不安装
+--reinstall 重新安装已经安装但可能存在问题的软件包
+--install-suggests  同时安装APT给出的建议安装的软件包
+```</p></li>
+<li><code>apt-cache</code>
+<ul>
+<li>软件搜索,当自己刚知道了一个软件，想下载使用，需要确认软件仓库里面有没有，就需要用到搜索功能了, <code>sudo apt-cache search softname1 softname2 softname3……</code></li>
+</ul></li>
+</ul></li>
+<li><p>dpkg从本地磁盘安装 deb 软件包</p>
+
+<ul>
+<li>以deb形式打包的软件包，就需要使用dpkg命令来安装
+<code>
+参数  说明
+-i  安装指定deb包
+-R  后面加上目录名，用于安装该目录下的所有deb安装包
+-r  remove，移除某个已安装的软件包
+-I  显示deb包文件的信息
+-s  显示已安装软件的信息
+-S  搜索已安装的软件包
+-L  显示已安装软件包的目录信息
+</code></li>
+</ul></li>
+</ul>
+
+<h2>19  Linux 进程概念</h2>
+
+<ul>
+<li><p>Session 主要是针对一个 tty 建立，Session 中的每个进程都称为一个工作(job)。每个会话可以连接一个终端(control terminal)。当控制终端有输入输出时，都传递给该会话的前台进程组。Session 意义在于将多个 jobs 囊括在一个终端，并取其中的一个 job 作为前台，来直接接收该终端的输入输出以及终端信号。 其他 jobs 在后台运行。</p>
+
+<ul>
+<li>前台（foreground）就是在终端中运行，能与你有交互的</li>
+<li>后台（background）就是在终端中运行，但是你并不能与其任何的交互，也不会显示其执行的过程</li>
+</ul></li>
+<li><p>工作管理</p>
+
+<ul>
+<li><code>command &amp;</code> 令job在后台工作</li>
+<li><code>ctrl + z</code> 使工作停止</li>
+<li><code>fg [jobnumber]</code> 使job回到前台运行</li>
+<li><code>bg [jobnumber]</code>使工作在后台运行</li>
+<li><code>jobs</code> 查看后台的工作</li>
+<li><code>kill -signal jobnumber</code>, 发送信号给工作
+<code>
+信号值   作用
+-1  重新读取参数运行，类似与restart
+-2  如同 ctrl+c 的操作退出　
+-9  强制终止该任务　　　
+-15 正常的方式终止该任务
+</code></li>
+</ul></li>
+</ul>
+
+<h2>20  Linux 进程管理</h2>
+
+<ul>
+<li><p><code>top</code> 工具是我们常用的一个查看工具，能实时的查看我们系统的一些关键信息的变化
+top 显示的第一排
+<code>
+内容  解释
+top 表示当前程序的名称
+11:05:18    表示当前的系统的时间
+up 8 days,17:12 表示该机器已经启动了多长时间
+1 user  表示当前系统中只有一个用户
+load average: 0.29,0.20,0.25    分别对应1、5、15分钟内cpu的平均负载
+</code>
+在实际生活中，比较有经验的运维或者系统管理员会将临界值定为0.7。这里的指数都是除以核心数以后的值，不要混淆了</p>
+
+<p>若是 load &lt; 0.7 并不会去关注他；
+若是 0.7&lt; load &lt; 1 的时候我们就需要稍微关注一下了，虽然还可以应付但是这个值已经离临界不远了；
+若是 load = 1 的时候我们就需要警惕了，因为这个时候已经没有更多的资源的了，已经在全力以赴了；
+若是 load > 5 的时候系统已经快不行了，这个时候你需要加班解决问题了</p>
+
+<p>top 的第三行数据，这一行基本上是 CPU 的一个使用情况的统计了
+<code>
+内容  解释
+Cpu(s): 1.0%us  用户空间进程占用CPU百分比
+1.0% sy 内核空间运行占用CPU百分比
+0.0%ni  用户进程空间内改变过优先级的进程占用CPU百分比
+97.9%id 空闲CPU百分比
+0.0%wa  等待输入输出的CPU时间百分比
+0.1%hi  硬中断(Hardware IRQ)占用CPU的百分比
+0.0%si  软中断(Software IRQ)占用CPU的百分比
+0.0%st  (Steal time) 是 hypervisor 等虚拟服务中，虚拟 CPU 等待实际 CPU 的时间的百分比
+</code></p>
+
+<p>top 的第四行数据，这一行基本上是内存的一个使用情况的统计了：
+<code>
+内容  解释
+8176740 total   物理内存总量
+8032104 used    使用的物理内存总量
+144636 free 空闲内存总量
+313088 buffers  用作内核缓存的内存量
+</code></p>
+
+<p>top 的第五行数据，这一行基本上是交换区的一个使用情况的统计了
+<code>
+内容  解释
+total   交换区总量
+used    使用的交换区总量
+free    空闲交换区总量
+cached  缓冲的交换区总量,内存中的内容被换出到交换区，而后又被换入到内存，但使用过的交换区尚未被覆盖
+</code></p>
+
+<p>对于每个进程
+<code>
+列名  解释
+PID 进程id
+USER    该进程的所属用户
+PR  该进程执行的优先级 priority 值
+NI  该进程的 nice 值
+VIRT    该进程任务所使用的虚拟内存的总数
+RES 该进程所使用的物理内存数，也称之为驻留内存数
+SHR 该进程共享内存的大小
+S   该进程进程的状态: S=sleep R=running Z=zombie
+%CPU    该进程CPU的利用率
+%MEM    该进程内存的利用率
+TIME+   该进程活跃的总时间
+COMMAND 该进程运行的名字
+</code>
+NICE 值叫做静态优先级，是用户空间的一个优先级值，其取值范围是-20至19。这个值越小，表示进程”优先级”越高，而值越大“优先级”越低。nice值中的 -20 到 19，中 -20 优先级最高， 0 是默认的值，而 19 优先级最低</p>
+
+<p>PR 值表示 Priority 值叫动态优先级，是进程在内核中实际的优先级值，进程优先级的取值范围是通过一个宏定义的，这个宏的名称是 MAX_PRIO，它的值为 140。Linux 实际上实现了 140 个优先级范围，取值范围是从 0-139，这个值越小，优先级越高。而这其中的 0 - 99 是实时进程的值，而 100 - 139 是给用户的。</p>
+
+<p>其中 PR 中的 100 to 139 值部分有这么一个对应 PR = 20 + (-20 to +19)，这里的 -20 to +19 便是nice值，所以说两个虽然都是优先级，而且有千丝万缕的关系，但是他们的值，他们的作用范围并不相同</p>
+
+<p>VIRT 任务所使用的虚拟内存的总数，其中包含所有的代码，数据，共享库和被换出 swap空间的页面等所占据空间的总数</p></li>
+<li><p><code>ps</code> , 状态D 是不能被中断睡眠的状态，处在这种状态的进程不接受外来的任何 signal，所以无法使用 kill 命令杀掉处于D状态的进程，无论是 kill，kill -9 还是 kill -15，一般处于这种状态可能是进程 I/O 的时候出问题了</p></li>
+<li><code>pstree</code> 可以很直接的看到相同的进程数量，最主要的还是我们可以看到所有进程的之间的相关性</li>
+<li><code>kill</code> 命令发送信号给进程</li>
+<li>进程的执行顺序
+<ul>
+<li>靠该进程的优先级值来判定唤醒处于休眠状态的进程的顺序</li>
+<li>优先级的值就是上文所提到的 PR 与 nice 来控制与体现，nice 的值我们是可以通过 nice 命令来修改的</li>
+</ul></li>
+</ul>
+
+<h2>21  Linux 日志系统</h2>
