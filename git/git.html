@@ -4,18 +4,52 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
     <title>git note</title>
-    <link type="text/css" rel="stylesheet" href="/assets/css/github-markdown.css">
-    <link type="text/css" rel="stylesheet" href="/assets/css/pilcrow.css">
-    <link type="text/css" rel="stylesheet" href="/assets/css/hljs-github.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
   </head>
   <body>
     <article class="markdown-body"><h1 id="git-note"><a class="header-link" href="#git-note"></a>git note</h1>
 <h2 id="git-for-computer-scientists"><a class="header-link" href="#git-for-computer-scientists"></a>Git for Computer Scientists</h2>
 <ul class="list">
 <li><a href="http://eagain.net/articles/git-for-computer-scientists/">http://eagain.net/articles/git-for-computer-scientists/</a></li>
-<li><p>每次commit后形成一个新的commit节点，节点是git仓库随时间变化的一个个快照(snapshot)，而HEAD节点则是随便移动的，workingdir和index的现状保存在HEAD节点中， 而HEAD指向一个特殊的分支节点，这个分支节点一直指向最新的commit节点</p>
-<p>  <img src="git-storage.6.dot.svg" alt="git_storage"></p>
+</ul>
+<h3 id="storage"><a class="header-link" href="#storage"></a>Storage</h3>
+<ul class="list">
+<li>git对象的存储形式为DAG， 有向无环图</li>
+<li>blob作为节点，存储数据，tree作为目录，指向其他子目录tree和数据blob，类似文件系统<ul class="list">
+<li><img src="./git-storage.1.dot.svg" alt="blob"> &amp; <img src="./git-storage.2.dot.svg" alt="tree"></li>
+</ul>
 </li>
+<li>commit指向tree节点， 同时指向其他commit节点, commit节点是git仓库随时间变化的一个个快照(snapshot)<ul class="list">
+<li><img src="./git-storage.3.dot.svg" alt="commit"></li>
+</ul>
+</li>
+<li>References, heads, branches节点类似便利贴，此类节点&quot;贴&quot;在commit节点上，是整个DAG图上唯一可以改动的地方，并且可以随便移动，同时此类节点并不存储在git历史中，也不能在仓库之间直接转移，此类节点也可以比作书签，表达的意思是“我在这里干活”</li>
+<li>每git commit一次，就会在DAG上增加一个节点， 同时把“便利贴”——现在正在工作的Branch节点指向新的commit节点</li>
+<li>HEAD是一个特殊的ref节点，这个ref节点指向当前正在工作的Branch节点<ul class="list">
+<li><img src="./git-storage.4.dot.svg" alt="ref"></li>
+</ul>
+</li>
+<li>remote refs节点实质上由远程服务器控制，使用git fetch能在本机上更新remote refs节点的位置以及相应的commit节点<ul class="list">
+<li><img src="./git-storage.5.dot.svg" alt="remote_ref"></li>
+</ul>
+</li>
+<li>tag节点实际上由一个DAG中的节点和“便利贴”构成，DAG中的节点指向commit节点，便利贴则指向这个DAG中的节点，“便利贴”可通过git fsck --lost-found找回<ul class="list">
+<li><img src="./git-storage.6.dot.svg" alt="tag"></li>
+</ul>
+</li>
+<li>DAG中的节点能够在仓库之间转移，可以被打包以节省空间，而无用的节点可以被garbage collectd掉，总的来说git仓库的组成就是DAG和便利贴</li>
+</ul>
+<h3 id="the-working-directory,-the-index-and-the-head"><a class="header-link" href="#the-working-directory,-the-index-and-the-head"></a>The Working Directory, The Index and The HEAD</h3>
+<ul class="list">
+<li>HEAD即是上面所提到的ref节点，可以说是当前commit的快照</li>
+<li>Index可以说是提议的下一commit节点的快照</li>
+<li>Working Directory则是文件系统里目录，可以自由修改</li>
+<li><img src="./workflow.png" alt="workflow"></li>
+</ul>
+<h3 id="history"><a class="header-link" href="#history"></a>History</h3>
+<ul class="list">
 <li><p>对于不同的分支节点合并， 合并使用merge</p>
 <ul class="list">
 <li><p>对于冲突: 当然，也存在极少数的情况，你必须自己手动地告诉 Git 该怎么做。最为常见的就是大家都改动了同一个文件。即便在这种情况下，Git 还是有可能自动地发现并解决掉这些冲突。但是，如果两个人同时更改了同一个文件的同一行代码，或者一个人改动了那些被另一个人删除了的代码，Git 就不能简单地确定到底谁的改动才是正确的。这时 Git 会把这些地方标记为一个冲突，你必须首先解决掉这些冲突，然后再继续你的工作。</p>
@@ -70,32 +104,48 @@
 </ul>
 </li>
 </ul>
-<h2 id="git-note-1"><a class="header-link" href="#git-note-1"></a>git note</h2>
+<h2 id="other-tutorials"><a class="header-link" href="#other-tutorials"></a>other tutorials</h2>
 <ul class="list">
-<li>使用命令<code>git log --graph --pretty=oneline --abbrev-commit</code>获得图形化log</li>
+<li>commonly used command     -   <ul class="list">
+<li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
 </ul>
+</li>
+<li>liaoxuefeng git getting Started<ul class="list">
+<li><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="some-note"><a class="header-link" href="#some-note"></a>some note</h2>
 <ul class="list">
-<li><p>git如何忽略已经提交的文件 (.gitignore文件无效)</p>
+<li><p>使用命令<code>git log --graph --oneline --decorate --all</code>获得图形化log</p>
+<ul class="list">
+<li><code>--graph</code> 图形化</li>
+<li><code>--oneline</code> 即 <code>--pretty=oneline --abbrev-commit</code>，简化commit信息</li>
+<li><code>--decorate</code> 展示分支</li>
+<li><code>-all</code> 展现所有分支</li>
+</ul>
+</li>
+<li><p>git如何忽略已经提交的文件 (<code>.gitignore</code>文件无效)</p>
 <ol class="list">
 <li>删除track的文件 (已经commit的文件)<ol class="list">
-<li>&#39;git rm&#39; 要忽略的文件</li>
-<li>git commit -a -m &quot;删除不需要的文件&quot;</li>
+<li><code>git rm</code> 要忽略的文件</li>
+<li><code>git commit -a -m</code> &quot;删除不需要的文件&quot;</li>
 </ol>
 </li>
-<li>在.gitignore文件中添加忽略规则<ol class="list">
-<li>在.gitignore文件中添加ignore条目, 如: some/path/some-file.ext</li>
-<li>提交.gitignore文件: git commit -a -m &quot;添加ignore规则&quot;</li>
+<li>在<code>.gitignore</code>文件中添加忽略规则<ol class="list">
+<li>在<code>.gitignore</code>文件中添加<code>ignore</code>条目, 如: <code>some/path/some-file.ext</code></li>
+<li>提交<code>.gitignore</code>文件: <code>git commit -a -m &quot;添加ignore规则&quot;</code></li>
 </ol>
 </li>
-<li>推送到远程仓库是ignore规则对于其他开发者也能生效: git push [remote]</li>
+<li>推送到远程仓库是ignore规则对于其他开发者也能生效: <code>git push [remote]</code></li>
 </ol>
 </li>
 <li><p>移除远程库，<code>git remote remove origin</code></p>
 </li>
 <li>将你的git协议由https变为ssh, <code>git remote set-url origin git@github.com:JackTroy/JackTroy.github.io.git</code></li>
+<li>使用<code>git stash</code>将当前working directory和index的修改保存，恢复到该branch的原本状态</li>
+<li>git仓库顶层文件夹命名和仓库本身无关！本地仓库文件夹名和远程仓库文件名可为不同名</li>
 </ul>
-<h2 id="common-command"><a class="header-link" href="#common-command"></a>common command</h2>
-<p><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html"></a></p>
     </article>
   </body>
 </html>

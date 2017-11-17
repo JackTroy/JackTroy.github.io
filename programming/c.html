@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><ul class="list">
+<li><p>c函数指针</p>
+<ul class="list">
+<li>指针的一种</li>
+<li><p>代码如下</p>
+<pre class="hljs"><code>  // definition: <span class="hljs-keyword">return</span> type + function name + argument type
+  void (*<span class="hljs-function"><span class="hljs-keyword">func</span>)<span class="hljs-params">(int)</span>;</span>
+
+  // invokation
+  <span class="hljs-built_in">int</span> a<span class="hljs-comment">;</span>
+  (*<span class="hljs-function"><span class="hljs-keyword">func</span>)<span class="hljs-params">(a)</span>;</span>
+
+  // reference a normal <span class="hljs-function"><span class="hljs-keyword">func</span></span>
+  void norm_func(<span class="hljs-built_in">int</span> x)
+  {
+      printf(<span class="hljs-string">"norm_func: %d\n"</span>,x)<span class="hljs-comment">;</span>
+  }
+  <span class="hljs-function"><span class="hljs-keyword">func</span> = &amp;<span class="hljs-title">norm_func</span>;</span>
+
+  // array: same <span class="hljs-keyword">return</span> type &amp; argument vector <span class="hljs-keyword">for</span> every <span class="hljs-function"><span class="hljs-keyword">func</span></span>
+  // elements are function pointer
+  <span class="hljs-built_in">int</span> (*funcs_array[])(void) = {
+      func1,
+      func2,
+  }<span class="hljs-comment">;</span></code></pre></li>
+</ul>
+</li>
+<li><p>designated initializers, see <a href="https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html">https://gcc.gnu.org/onlinedocs/gcc/Designated-Inits.html</a></p>
+<pre class="hljs"><code><span class="hljs-comment">//other elements are zero</span>
+int a[<span class="hljs-number">6</span>] = { [<span class="hljs-number">4</span>] = <span class="hljs-number">29</span>, [<span class="hljs-number">2</span>] = <span class="hljs-number">15</span> };</code></pre></li>
+<li><p>checkout the below code, it will never end, you bitch!!!! that&#39;s <code>size_t</code></p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">void</span>
+  <span class="hljs-title">env_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+  </span>{
+      <span class="hljs-comment">// Set up envs array</span>
+      <span class="hljs-comment">// LAB 3: Your code here.</span>
+      <span class="hljs-keyword">size_t</span> i;
+      env_free_list = <span class="hljs-literal">NULL</span>;
+      <span class="hljs-keyword">for</span> (i = NENV - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+          envs[i].env_id = <span class="hljs-number">0</span>;
+          envs[i].env_link = env_free_list;
+          env_free_list = &amp;envs[i];        
+      }
+      <span class="hljs-comment">// Per-CPU part of the initialization</span>
+      env_init_percpu();
+  }</code></pre></li>
+<li><p>do remeber to add break after <code>case</code> in <code>switch</code></p>
+<pre class="hljs"><code>  <span class="hljs-keyword">int32_t</span>
+  syscall(<span class="hljs-keyword">uint32_t</span> syscallno, <span class="hljs-keyword">uint32_t</span> a1, <span class="hljs-keyword">uint32_t</span> a2, <span class="hljs-keyword">uint32_t</span> a3, <span class="hljs-keyword">uint32_t</span> a4, <span class="hljs-keyword">uint32_t</span> a5)
+  {
+      <span class="hljs-comment">// Call the function corresponding to the 'syscallno' parameter.</span>
+      <span class="hljs-comment">// Return any appropriate return value.</span>
+      <span class="hljs-comment">// LAB 3: Your code here.</span>
+
+      <span class="hljs-comment">//panic("syscall not implemented");</span>
+      <span class="hljs-keyword">int32_t</span> ret = <span class="hljs-number">0</span>;
+      <span class="hljs-keyword">switch</span> (syscallno) {
+      <span class="hljs-keyword">case</span> SYS_cputs:
+          sys_cputs((<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *) a1, (<span class="hljs-keyword">size_t</span>) a2);
+          ret = <span class="hljs-number">0</span>;
+          <span class="hljs-keyword">break</span>; 
+      <span class="hljs-keyword">case</span> SYS_cgetc:
+          sys_cgetc();
+          ret = <span class="hljs-number">0</span>;
+          <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> SYS_getenvid:
+          ret = sys_getenvid();
+          <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">case</span> SYS_env_destroy:
+          ret = sys_env_destroy((<span class="hljs-keyword">envid_t</span>) a1);
+          <span class="hljs-keyword">break</span>;
+      <span class="hljs-keyword">default</span>:
+          ret = -E_INVAL;
+      }
+      <span class="hljs-keyword">return</span> ret;
+  }</code></pre></li>
+<li><p>Multiple inclusions, use the following macro</p>
+<pre class="hljs"><code>  <span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> _LISTH_</span>
+  <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> _LISTH_</span>
+
+  <span class="hljs-params">&lt;your code&gt;</span>
+
+  <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre></li>
+</ul>
+    </article>
+  </body>
+</html>

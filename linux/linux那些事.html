@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
     <title>linux那些事</title>
-    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
-    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
-    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
   </head>
   <body>
     <article class="markdown-body"><h1 id="linux那些事"><a class="header-link" href="#linux那些事"></a>linux那些事</h1>
@@ -38,7 +38,7 @@ sudo ntpdate <span class="hljs-selector-tag">time</span><span class="hljs-select
 </li>
 <li><p>lsof（list open files）是一个查看当前系统文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件,使用lsof查看网络连接信息,<code>lsof -i:11889</code>,查看11889端口占用情况</p>
 </li>
-<li><p><code>find / -name &quot;*.md&quot; -type f -exec sh -c &#39;markdown &quot;${0}&quot; &gt; &quot;${0%.md}.html&quot;&#39; {} \;</code>,从根目录开始将所有名为<code>*.md</code>的文件使用<code>markdown</code>为<code>*.html</code></p>
+<li><p><code>find ./ -name &quot;*.md&quot; -type f -exec sh -c &#39;marked -i &quot;${0}&quot; -o &quot;${0%.md}.html&quot;&#39; {} \;</code>,从根目录开始将所有名为<code>*.md</code>的文件使用<code>markdown</code>为<code>*.html</code></p>
 </li>
 </ol>
     </article>

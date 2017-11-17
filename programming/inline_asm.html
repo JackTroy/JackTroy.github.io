@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><ul class="list">
+<li><a href="http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html">http://www.delorie.com/djgpp/doc/brennan/brennan_att_inline_djgpp.html</a></li>
+<li>a note to inline assembly under DJGPP. DJGPP is based on GCC, so it uses the AT&amp;T/UNIX syntax and has a somewhat unique method of inline assembly. </li>
+</ul>
+<ul class="list">
+<li><p>Basic inline assembly</p>
+<ul class="list">
+<li><p>format</p>
+<pre class="hljs"><code> \\ general format
+ <span class="hljs-keyword">asm</span> (<span class="hljs-string">"statements"</span>)<span class="hljs-comment">;
+</span>
+ // examples below
+ // <span class="hljs-keyword">one</span> statement per <span class="hljs-keyword">asm</span>
+ <span class="hljs-keyword">asm</span> (<span class="hljs-string">"nop"</span>)<span class="hljs-comment">;
+</span>
+ // multiple statements per <span class="hljs-keyword">asm</span>, sure <span class="hljs-keyword">to</span> put <span class="hljs-string">"\n\t"</span> after each line
+ <span class="hljs-keyword">asm</span> (<span class="hljs-string">"pushl %eax\n\t"</span>
+  <span class="hljs-string">"movl $0, %eax\n\t"</span>
+  <span class="hljs-string">"popl %eax"</span>)<span class="hljs-comment">;</span></code></pre></li>
+</ul>
+</li>
+<li><p>Extended inline assembly</p>
+<ul class="list">
+<li>clobbered_regsiters: regsiters may be violated by asm()</li>
+<li><p>format</p>
+<pre class="hljs"><code>  asm ( <span class="hljs-string">"statements"</span> 
+          : <span class="hljs-type">output_registers</span> 
+          : <span class="hljs-type">input_registers</span> 
+          : <span class="hljs-type">clobbered_registers</span>);</code></pre></li>
+<li><p>examples:</p>
+<pre class="hljs"><code>  asm (<span class="hljs-string">"leal (%0,%0,4), %0"</span>
+          : <span class="hljs-string">"=r"</span> (<span class="hljs-name">x</span>)
+          : <span class="hljs-string">"0"</span> (<span class="hljs-name">x</span>) )<span class="hljs-comment">;</span>
+
+  // the following is the same as above
+  asm (<span class="hljs-string">"leal (%%ebx,%%ebx,4), %%ebx"</span>
+          : <span class="hljs-string">"=b"</span> (<span class="hljs-name">x</span>)
+          : <span class="hljs-string">"b"</span> (<span class="hljs-name">x</span>) )<span class="hljs-comment">;</span></code></pre></li>
+<li><p>loading code</p>
+<pre class="hljs"><code>  a        <span class="hljs-built_in">eax</span>
+  b        <span class="hljs-built_in">ebx</span>
+  c        <span class="hljs-built_in">ecx</span>
+  d        <span class="hljs-built_in">edx</span>
+  S        <span class="hljs-built_in">esi</span>
+  D        <span class="hljs-built_in">edi</span>
+  I        constant value (<span class="hljs-number">0</span> to <span class="hljs-number">31</span>)
+  q,r      dynamically allocated register (see below)
+  g        <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">ebx</span>, <span class="hljs-built_in">ecx</span>, <span class="hljs-built_in">edx</span> <span class="hljs-keyword">or</span> variable <span class="hljs-keyword">in</span> memory
+  A        <span class="hljs-built_in">eax</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">edx</span> combined <span class="hljs-keyword">into</span> a <span class="hljs-number">64</span>-bit integer (use long longs)</code></pre></li>
+<li><p>If you want to reuse a register allocated with a &quot;q&quot; or &quot;r&quot;, you use &quot;0&quot;, &quot;1&quot;, &quot;2&quot;... etc, it&#39;s a straightforward first-come-first-served, left-to-right thing, mapping to the &quot;q&quot;&#39;s and &quot;r&quot;&#39;s.</p>
+</li>
+<li><p>Note the use of = to specify an output register.</p>
+</li>
+<li><p>Important note: If your assembly statement must execute where you put it, (i.e. must not be moved out of a loop as an optimization), put the keyword volatile after asm and before the ()&#39;s. To be ultra-careful, use</p>
+<pre class="hljs"><code>  __asm__ __volatile__ (...whatever...);</code></pre></li>
+<li><p>Some useful examples</p>
+<pre class="hljs"><code>  <span class="hljs-selector-id">#define</span> <span class="hljs-selector-tag">disable</span>() <span class="hljs-selector-tag">__asm__</span> <span class="hljs-selector-tag">__volatile__</span> (<span class="hljs-string">"cli"</span>);
+  <span class="hljs-selector-id">#define</span> <span class="hljs-selector-tag">enable</span>() <span class="hljs-selector-tag">__asm__</span> <span class="hljs-selector-tag">__volatile__</span> (<span class="hljs-string">"sti"</span>);</code></pre><p>  Of course, libc has these defined too.</p>
+<pre class="hljs"><code>  <span class="hljs-comment">#define times3(arg1, arg2) \</span>
+  __asm__ ( <span class="hljs-string">\</span>
+    <span class="hljs-string">"leal (%0,%0,2),%0"</span> <span class="hljs-string">\</span>
+    : <span class="hljs-string">"=r"</span> (arg2) <span class="hljs-string">\</span>
+    : <span class="hljs-string">"0"</span> (arg1) );
+
+  <span class="hljs-comment">#define times5(arg1, arg2) \</span>
+  __asm__ ( <span class="hljs-string">\</span>
+    <span class="hljs-string">"leal (%0,%0,4),%0"</span> <span class="hljs-string">\</span>
+    : <span class="hljs-string">"=r"</span> (arg2) <span class="hljs-string">\</span>
+    : <span class="hljs-string">"0"</span> (arg1) );
+
+  <span class="hljs-comment">#define times9(arg1, arg2) \</span>
+  __asm__ ( <span class="hljs-string">\</span>
+    <span class="hljs-string">"leal (%0,%0,8),%0"</span> <span class="hljs-string">\</span>
+    : <span class="hljs-string">"=r"</span> (arg2) <span class="hljs-string">\</span>
+    : <span class="hljs-string">"0"</span> (arg1) );</code></pre><p>  These multiply arg1 by 3, 5, or 9 and put them in arg2. You should be ok to do: <code>times5(x,x);</code> as well.</p>
+<pre class="hljs"><code>  <span class="hljs-comment">#define rep_movsl(src, dest, numwords) \</span>
+  __asm__ __volatile__ ( <span class="hljs-string">\</span>
+    <span class="hljs-string">"cld\n\t"</span> <span class="hljs-string">\</span>
+    <span class="hljs-string">"rep\n\t"</span> <span class="hljs-string">\</span>
+    <span class="hljs-string">"movsl"</span> <span class="hljs-string">\</span>
+    : : <span class="hljs-string">"S"</span> (src), <span class="hljs-string">"D"</span> (dest), <span class="hljs-string">"c"</span> (numwords) <span class="hljs-string">\</span>
+    : <span class="hljs-string">"%ecx"</span>, <span class="hljs-string">"%esi"</span>, <span class="hljs-string">"%edi"</span> )</code></pre><p>  Helpful Hint: If you say memcpy() with a constant length parameter, GCC will inline it to a rep movsl like above. But if you need a variable length version that inlines and you&#39;re always moving dwords, there ya go.</p>
+<pre class="hljs"><code>  <span class="hljs-comment">#define rep_stosl(value, dest, numwords) \</span>
+  __asm__ __volatile__ ( <span class="hljs-string">\</span>
+    <span class="hljs-string">"cld\n\t"</span> <span class="hljs-string">\</span>
+    <span class="hljs-string">"rep\n\t"</span> <span class="hljs-string">\</span>
+    <span class="hljs-string">"stosl"</span> <span class="hljs-string">\</span>
+    : : <span class="hljs-string">"a"</span> (value), <span class="hljs-string">"D"</span> (dest), <span class="hljs-string">"c"</span> (numwords) <span class="hljs-string">\</span>
+    : <span class="hljs-string">"%ecx"</span>, <span class="hljs-string">"%edi"</span> )</code></pre><p>  Same as above but for memset(), which doesn&#39;t get inlined no matter what (for now.)</p>
+<pre class="hljs"><code>  #define RDTSC(<span class="hljs-name">llptr</span>) ({ \
+  __asm__ __volatile__ ( \
+          <span class="hljs-string">".byte 0x0f; .byte 0x31"</span> \
+          : <span class="hljs-string">"=A"</span> (<span class="hljs-name">llptr</span>) \
+          : : <span class="hljs-string">"eax"</span>, <span class="hljs-string">"edx"</span>)<span class="hljs-comment">; })</span></code></pre><p>  Reads the TimeStampCounter on the Pentium and puts the 64 bit result into llptr.</p>
+</li>
+</ul>
+</li>
+</ul>
+    </article>
+  </body>
+</html>

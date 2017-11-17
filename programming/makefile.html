@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Makefile</title>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="makefile"><a class="header-link" href="#makefile"></a>Makefile</h1>
+<ul class="list">
+<li><a href="http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/">http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/</a></li>
+<li>must use tab to indent</li>
+<li><p>command, dependenies will be compiled automatically, once the dependencies change, make will execute command again</p>
+<pre class="hljs"><code>  <span class="hljs-symbol">&lt;target&gt;</span>: <span class="hljs-symbol">&lt;dependencies&gt;</span>
+      &lt;<span class="hljs-keyword">shell</span> <span class="hljs-keyword">command</span>(s)&gt;</code></pre></li>
+<li><p>macro</p>
+<pre class="hljs"><code>  <span class="hljs-comment"># definition</span>
+  &lt;identifier&gt; = &lt;value&gt; &lt;value&gt; ...
+
+  <span class="hljs-comment"># using macro</span>
+  <span class="hljs-variable">$(</span>identifier)
+
+  <span class="hljs-comment"># some special macro identifiers</span>
+
+  <span class="hljs-comment"># CC is the C compiler to use</span>
+  <span class="hljs-variable">$(</span>CC)
+
+  <span class="hljs-comment"># CFLAGS is the list of flags to pass to the compilation command</span>
+  <span class="hljs-variable">$(</span>CFLAGS)
+
+  <span class="hljs-comment"># DEPS is the list of dependencies</span>
+  <span class="hljs-variable">$(</span>DEPS)
+
+  <span class="hljs-comment"># OBJ is the list of object files</span>
+  <span class="hljs-variable">$(</span>OBJ)
+
+  <span class="hljs-comment"># @ the left side of the :</span>
+  <span class="hljs-variable">$@</span>
+
+  <span class="hljs-comment"># ^ the right side of the :</span>
+  <span class="hljs-variable">$^</span>
+
+  <span class="hljs-comment"># &lt; is the first item in the dependencies list</span>
+  <span class="hljs-variable">$&lt;</span></code></pre></li>
+<li><p>rule, it tells that how to deal with file with <code>.o</code> suffix, it needs the source <code>.c</code> with the same name (therefore the <code>%</code> symbol) and file in <code>$(DEPS)</code> macro</p>
+<pre class="hljs"><code>  %.o: %.c $(DEPS)
+      $(CC) -c -o $@ $&lt; $(CFLAGS)</code></pre></li>
+<li><p>file path manage, like src, include, obj
+  ```
+  IDIR =../include
+  CC=gcc
+  CFLAGS=-I$(IDIR)</p>
+<p>  ODIR=obj
+  LDIR =../lib</p>
+<p>  LIBS=-lm</p>
+<p>  _DEPS = hellomake.h
+  DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))</p>
+<p>  _OBJ = hellomake.o hellofunc.o 
+  OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))</p>
+</li>
+</ul>
+<pre class="hljs"><code>$(ODIR)/%.<span class="hljs-symbol">o:</span> %.c $(DEPS)
+    $(CC) -c -o $@ $&lt; $(CFLAGS)
+
+<span class="hljs-symbol">hellomake:</span> $(OBJ)
+    gcc -o $@ $^ $(CFLAGS) $(LIBS)
+
+.<span class="hljs-symbol">PHONY:</span> clean
+
+<span class="hljs-symbol">clean:</span>
+    rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
+<span class="hljs-string">``</span><span class="hljs-string">`</span></code></pre><ul class="list">
+<li><p><code>.PHONY</code> rule keeps make from doing something with a file named clean.</p>
+<pre class="hljs"><code>  .<span class="hljs-symbol">PHONY:</span> clean
+
+  <span class="hljs-symbol">clean:</span>
+      rm -f <span class="hljs-variable">$(</span>ODIR)/*.o *~ core <span class="hljs-variable">$(</span>INCDIR)/*~</code></pre></li>
+</ul>
+    </article>
+  </body>
+</html>

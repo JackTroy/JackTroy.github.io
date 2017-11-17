@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>Kotlin</title>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="kotlin"><a class="header-link" href="#kotlin"></a>Kotlin</h1>
+<h2 id="basic-syntax"><a class="header-link" href="#basic-syntax"></a>Basic Syntax</h2>
+<ul class="list">
+<li><p>Defining package of source file <code>package  my.demo</code></p>
+</li>
+<li><p>Import is the same as java <code>import java.util.*</code></p>
+</li>
+<li><p>Deferred type statement, cool</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">sum</span><span class="hljs-params">(a: <span class="hljs-type">Int</span>, b: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> {
+      <span class="hljs-keyword">return</span> a + b
+  }</code></pre></li>
+<li><p>Function with an expression body and inferred return type:</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">sum_short</span><span class="hljs-params">(a: <span class="hljs-type">Int</span>, b: <span class="hljs-type">Int</span>)</span></span> = a + b</code></pre></li>
+<li><p>Void func, type statement can be omitted</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">printSum</span><span class="hljs-params">(a:<span class="hljs-type">Int</span>, b: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Unit</span> {
+      println(<span class="hljs-string">"sum of <span class="hljs-subst">$a</span> and <span class="hljs-subst">$b</span> is <span class="hljs-subst">${a + b}</span>"</span>)
+  }</code></pre></li>
+<li><p>Top level variable is not in any function</p>
+</li>
+<li><p>Conditional statement</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">maxOf</span><span class="hljs-params">(a: <span class="hljs-type">Int</span>, b: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> {
+      <span class="hljs-keyword">if</span> (a &gt; b) <span class="hljs-keyword">return</span> a
+      <span class="hljs-keyword">else</span>       <span class="hljs-keyword">return</span> b
+  }
+  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">maxOfShort</span><span class="hljs-params">(a: <span class="hljs-type">Int</span>, b: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> = <span class="hljs-keyword">if</span> (a &gt; b) a <span class="hljs-keyword">else</span> b</code></pre></li>
+<li><p>Type check <code>is</code> &amp; automatic cast</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">getStringLenth</span><span class="hljs-params">(obj: <span class="hljs-type">Any</span>)</span></span>: <span class="hljs-built_in">Int</span>? {
+  <span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">is</span> String &amp;&amp; obj.length &gt; <span class="hljs-number">0</span>)
+      <span class="hljs-keyword">return</span> obj.length
+  <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+  }</code></pre></li>
+<li><p><code>when</code> expression cool!</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">describe</span><span class="hljs-params">(obj: <span class="hljs-type">Any</span>)</span></span>: String =
+      <span class="hljs-keyword">when</span> (obj) {
+          <span class="hljs-number">1</span>           -&gt; <span class="hljs-string">"One"</span>
+          <span class="hljs-string">"Hello"</span>     -&gt; <span class="hljs-string">"Greeting"</span>
+          <span class="hljs-keyword">is</span> <span class="hljs-built_in">Long</span>     -&gt; <span class="hljs-string">"Long"</span>
+          !<span class="hljs-keyword">is</span> String  -&gt; <span class="hljs-string">"Not a string"</span>
+          <span class="hljs-keyword">else</span>        -&gt; <span class="hljs-string">"Unknown"</span>
+      }</code></pre></li>
+<li><p>Assign-once variable <code>val</code></p>
+<pre class="hljs"><code>  val <span class="hljs-selector-tag">a</span>: Int = <span class="hljs-number">1</span>
+  val <span class="hljs-selector-tag">b</span> = <span class="hljs-number">1</span></code></pre></li>
+<li><p>Deferred assignment (must not in top level)</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">val</span> c: <span class="hljs-built_in">Int</span>
+  c = <span class="hljs-number">3</span></code></pre></li>
+<li><p>Mutable variable <code>var</code></p>
+<pre class="hljs"><code>  var va = <span class="hljs-number">1</span>
+  va += <span class="hljs-number">1</span></code></pre></li>
+<li><p>String templates &amp; Arbitrary expression</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">var</span> s1 = <span class="hljs-string">"a is $va"</span>
+  <span class="hljs-meta">val</span> s2 = <span class="hljs-string">"${s1.replace("</span><span class="hljs-keyword">is</span><span class="hljs-string">", "</span><span class="hljs-keyword">is</span> still<span class="hljs-string">")}"</span></code></pre></li>
+<li><p>A reference must be explicitly marked with <code>?</code> as nullable when null value is possible</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">var</span> nullorstring: <span class="hljs-built_in">String</span>?</code></pre></li>
+<li><p>Using for loop</p>
+<pre class="hljs"><code>  var <span class="hljs-built_in">items</span> = listOf(<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"kiwi"</span>)
+  <span class="hljs-keyword">for</span> (item in <span class="hljs-built_in">items</span>)
+      println(item)
+  <span class="hljs-keyword">for</span> (<span class="hljs-built_in">index</span> in <span class="hljs-built_in">items</span>.indices)
+      println(<span class="hljs-built_in">items</span>[<span class="hljs-built_in">index</span>])
+  -using <span class="hljs-keyword">while</span> loop
+  var <span class="hljs-built_in">index</span> = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">while</span> (<span class="hljs-built_in">index</span> &lt; <span class="hljs-built_in">items</span>.size) {
+      println(<span class="hljs-built_in">items</span>[<span class="hljs-built_in">index</span>])
+      <span class="hljs-built_in">index</span>++
+  }</code></pre></li>
+<li><p>using ranges <code>1..100</code></p>
+<pre class="hljs"><code>  if (<span class="hljs-name">a</span> in <span class="hljs-number">1</span>..<span class="hljs-number">10</span>)
+      println(<span class="hljs-string">"yes in range"</span>)
+  for (<span class="hljs-name">x</span> in <span class="hljs-number">1</span>..<span class="hljs-number">10</span> step <span class="hljs-number">2</span>)
+      println(<span class="hljs-name">x</span>)
+  for (<span class="hljs-name">x</span> in <span class="hljs-number">9</span> downTo <span class="hljs-number">0</span> step <span class="hljs-number">3</span>)
+      println(<span class="hljs-name">x</span>)</code></pre></li>
+<li><p>using collection, <code>listOf</code></p>
+<pre class="hljs"><code>  <span class="hljs-selector-tag">var</span> fruits = listOf(<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"avocado"</span>)
+  fruits<span class="hljs-selector-class">.filter</span> { it.startsWith(<span class="hljs-string">"a"</span>) }
+          <span class="hljs-selector-class">.sortedBy</span> { it }
+          <span class="hljs-selector-class">.map</span> { it.toUpperCase() }
+          <span class="hljs-selector-class">.forEach</span> { println(it) }</code></pre><p>}</p>
+</li>
+<li><p>Creating basic classes and their instances, just like java</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span><span class="hljs-params">(args: <span class="hljs-type">Array</span>&lt;<span class="hljs-type">String</span>&gt;)</span></span> {
+      <span class="hljs-keyword">val</span> rectangle = Rectangle(<span class="hljs-number">5.0</span>, <span class="hljs-number">2.0</span>) <span class="hljs-comment">//no 'new' keyword required</span>
+      <span class="hljs-keyword">val</span> triangle = Triangle(<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">5.0</span>)
+      println(<span class="hljs-string">"Area of rectangle is <span class="hljs-subst">${rectangle.calculateArea()}</span>, its     perimeter is <span class="hljs-subst">${rectangle.perimeter}</span>"</span>)
+      println(<span class="hljs-string">"Area of triangle is <span class="hljs-subst">${triangle.calculateArea()}</span>, its   perimeter is <span class="hljs-subst">${triangle.perimeter}</span>"</span>)
+  }
+
+  <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Shape</span></span>(<span class="hljs-keyword">val</span> sides: List&lt;<span class="hljs-built_in">Double</span>&gt;) {
+      <span class="hljs-keyword">val</span> perimeter: <span class="hljs-built_in">Double</span> <span class="hljs-keyword">get</span>() = sides.sum()
+      <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">calculateArea</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Double</span>
+  }
+
+  <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">RectangleProperties</span> </span>{
+      <span class="hljs-keyword">val</span> isSquare: <span class="hljs-built_in">Boolean</span>
+  }
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rectangle</span></span>(
+      <span class="hljs-keyword">var</span> height: <span class="hljs-built_in">Double</span>,
+      <span class="hljs-keyword">var</span> length: <span class="hljs-built_in">Double</span>
+  ) : Shape(listOf(height, length, height, length)), RectangleProperties {
+      <span class="hljs-keyword">override</span> <span class="hljs-keyword">val</span> isSquare: <span class="hljs-built_in">Boolean</span> <span class="hljs-keyword">get</span>() = length == height
+      <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">calculateArea</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Double</span> = height * length
+  }
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triangle</span></span>(
+      <span class="hljs-keyword">var</span> sideA: <span class="hljs-built_in">Double</span>,
+      <span class="hljs-keyword">var</span> sideB: <span class="hljs-built_in">Double</span>,
+      <span class="hljs-keyword">var</span> sideC: <span class="hljs-built_in">Double</span>
+  ) : Shape(listOf(sideA, sideB, sideC)) {
+      <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">calculateArea</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Double</span> {
+          <span class="hljs-keyword">val</span> s = perimeter / <span class="hljs-number">2</span>
+          <span class="hljs-keyword">return</span> Math.sqrt(s * (s - sideA) * (s - sideB) * (s - sideC))
+      }
+  }</code></pre></li>
+</ul>
+<h2 id="higher-order-functions-and-lambdas"><a class="header-link" href="#higher-order-functions-and-lambdas"></a>Higher-Order Functions and Lambdas</h2>
+<ul class="list">
+<li><p>A higher-order function is a function that takes functions as parameters, or returns a function.</p>
+<ul class="list">
+<li><p>Function type parameter statement <code>() -&gt; T</code></p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;T&gt;</span> <span class="hljs-title">lock</span><span class="hljs-params">(lock: <span class="hljs-type">Lock</span>, body: ()</span></span> -&gt; T): T {
+      lock.lock()
+      <span class="hljs-keyword">try</span> {
+          <span class="hljs-keyword">return</span> body()
+      }
+      <span class="hljs-keyword">finally</span> {
+          lock.unlock()
+      }
+  }</code></pre></li>
+<li><p>Function type argument form <code>::func_ref</code></p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">toBeSynchronized</span><span class="hljs-params">()</span></span> = sharedResource.operation()
+  <span class="hljs-keyword">val</span> result = lock(lock, ::toBeSynchronized)</code></pre></li>
+<li>If the last parameter to a function is a function, and you&#39;re passing    a lambda expression as the corresponding argument, you can specify it  outside of parentheses:<pre class="hljs"><code> <span class="hljs-keyword">lock</span> (<span class="hljs-keyword">lock</span>) {
+     sharedResource.operation()
+ }
+ val doubled = ints.map { <span class="hljs-keyword">value</span> -&gt; <span class="hljs-keyword">value</span> * <span class="hljs-number">2</span> }</code></pre></li>
+</ul>
+</li>
+<li><p><code>it</code> implicit name of a single parameter to omit the parameter</p>
+<pre class="hljs"><code>  ints.<span class="hljs-keyword">map</span> { it * <span class="hljs-number">2</span> }</code></pre></li>
+<li><p>underscore of unused variable (like Python)</p>
+<pre class="hljs"><code>  map.<span class="hljs-keyword">foreach</span> { _, <span class="hljs-keyword">value</span> -&gt; println(<span class="hljs-keyword">value</span>) }</code></pre></li>
+<li><p>Function literals (lambda &amp; anonymous)</p>
+<ul class="list">
+<li>Lambda Expressions, below three achieve same functionality</li>
+<li>Note: before -&gt; is args, after -&gt; are expressions, last expression is     return value</li>
+<li>With function type but without annotation<pre class="hljs"><code>  var compare1: ((a: <span class="hljs-keyword">String, </span><span class="hljs-keyword">b: </span><span class="hljs-keyword">String) </span>-&gt; <span class="hljs-keyword">Boolean)? </span>= { a, <span class="hljs-keyword">b </span>-&gt;  a.length &gt; <span class="hljs-keyword">b.length </span>}</code></pre></li>
+<li>With annotation but without function type<pre class="hljs"><code>  <span class="hljs-selector-tag">var</span> compare2 = { <span class="hljs-selector-tag">a</span>: String, <span class="hljs-selector-tag">b</span>: String -&gt; <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.length</span> &gt; <span class="hljs-selector-tag">b</span><span class="hljs-selector-class">.length</span> }</code></pre></li>
+<li>Ordinay function<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">compare</span><span class="hljs-params">(a: <span class="hljs-type">String</span>, b: <span class="hljs-type">String</span>)</span></span>: <span class="hljs-built_in">Boolean</span>? = a.length &lt; b.length</code></pre></li>
+<li>Anonymous Functions, literaly function without the namefield<pre class="hljs"><code>  <span class="hljs-keyword">var</span> anonymous = <span class="hljs-function"><span class="hljs-title">fun</span><span class="hljs-params">(x: <span class="hljs-type">Int</span>, y: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> {
+      <span class="hljs-keyword">return</span> x + y
+  }
+  ints.filter(<span class="hljs-function"><span class="hljs-title">fun</span><span class="hljs-params">(item)</span></span> = item &gt; <span class="hljs-number">0</span>)</code></pre></li>
+<li>Difference between Lambda &amp; Anonymous lies in return</li>
+<li>Return will return to label key word or fun word</li>
+<li>When using label to return, format as below<pre class="hljs"><code>  <span class="hljs-keyword">var</span> lambdafunction = <span class="hljs-symbol">label@</span>{ <span class="hljs-keyword">if</span> (it == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span><span class="hljs-symbol">@label</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span>   <span class="hljs-keyword">return</span><span class="hljs-symbol">@label</span> <span class="hljs-number">0</span> }</code></pre></li>
+<li>Following two are the same<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> {
+  ints.forEach <span class="hljs-symbol">lit@</span> {
+      <span class="hljs-keyword">if</span> (it == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span><span class="hljs-symbol">@lit</span>
+      print(it)
+  }
+  }
+  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> {
+      ints.forEach {
+          <span class="hljs-keyword">if</span> (it == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span><span class="hljs-symbol">@forEach</span>
+          print(it)
+      }
+  }</code></pre></li>
+<li>Non-local returns v.s. local-return<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> {
+      ordinaryFunction {
+          <span class="hljs-keyword">return</span>
+          <span class="hljs-comment">// ERROR: can not make `foo` return here, only    make  ordinaryFunction return</span>
+      }
+  }
+  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> {
+      inlineFunction {
+          <span class="hljs-keyword">return</span>
+          <span class="hljs-comment">// OK: the lambda is inlined, cause the inline    function is   expanded in the foo()</span>
+      }
+  }</code></pre></li>
+<li>If the inline function do not execute the lambda directly from the    function body the function type parameter of inline function need to be marked with <code>crossline</code> prefix<pre class="hljs"><code>  <span class="hljs-keyword">inline</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">crossinline</span> body: ()</span></span> -&gt; <span class="hljs-built_in">Unit</span>) {
+      <span class="hljs-keyword">val</span> f = <span class="hljs-keyword">object</span>: Runnable {
+          <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">run</span><span class="hljs-params">()</span></span> = body()
+      }
+  }</code></pre></li>
+<li><p>Key of thinking all these functions calling -- the calling stack and crazy return</p>
+</li>
+<li><p>Closures, a lambda expression or anonymous function (as well as a local function and an object expression) can access its closure, i.e. the variables declared in the outer scope. </p>
+<pre class="hljs"><code>  <span class="hljs-keyword">var</span> <span class="hljs-keyword">sum</span> = 0
+  ints.filter { it &gt; 0 }.<span class="hljs-keyword">forEach</span> {
+      <span class="hljs-keyword">sum</span> += it
+  }
+  <span class="hljs-keyword">print</span>(<span class="hljs-keyword">sum</span>)</code></pre></li>
+<li>Function Literals with Receiver, call methods on that receiver object without any additional qualifiers.<pre class="hljs"><code>  <span class="hljs-comment">// Function type statement example, receiver type is defined by first type statement, other parameter required to execute the function is in the parenthesis</span>
+  <span class="hljs-keyword">val</span> sum = <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-built_in">Int</span>.<span class="hljs-params">(other: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> = <span class="hljs-keyword">this</span> + other
+  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-built_in">Int</span>.<span class="hljs-title">sum</span><span class="hljs-params">(other: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> = <span class="hljs-keyword">this</span> + other
+  <span class="hljs-comment">// Calling example </span>
+  <span class="hljs-number">1.</span>sum(<span class="hljs-number">2</span>)</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="idioms"><a class="header-link" href="#idioms"></a>Idioms</h2>
+<ul class="list">
+<li>Creating DTO(Data transfer object)/POJO(Plain old java object), use <code>data class</code></li>
+<li>Default values for function parameters, like Python</li>
+<li>Filtering a list <code>val positives = list.filter { it &gt; 0 }</code></li>
+<li>Read-only list <code>val list = listOf(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)</code>, ~ map <code>val map = mapOf(&quot;a&quot; to 1, &quot;b&quot; to 2, &quot;c&quot; to 3)</code></li>
+<li>Lazy property ??????????<pre class="hljs"><code>  <span class="hljs-keyword">val</span> p: String by <span class="hljs-keyword">lazy</span> {
+      <span class="hljs-comment">// compute the string</span>
+  }</code></pre></li>
+<li>singleton<pre class="hljs"><code>  <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Resource</span> </span>{
+      <span class="hljs-keyword">val</span> name = <span class="hljs-string">"Name"</span>
+  }</code></pre></li>
+<li>If not null and else shorthand, notice the use of <code>?</code> and <code>?:</code><ul class="list">
+<li>If null, <code>?</code> will return null and abondon expression connected with <code>.</code></li>
+<li>If null, <code>?:</code> will execute the next expression <pre class="hljs"><code>val files = <span class="hljs-built_in">File</span>(<span class="hljs-string">"Test"</span>).listFiles()
+<span class="hljs-built_in">println</span>(files?.<span class="hljs-built_in">size</span> ?: <span class="hljs-string">"empty"</span>)</code></pre></li>
+</ul>
+</li>
+<li>try/catch, just like java</li>
+<li><code>if</code> as expression<pre class="hljs"><code>  val <span class="hljs-attr">result</span> = <span class="hljs-keyword">if</span> (<span class="hljs-attr">param</span> == <span class="hljs-number">1</span>) {
+      <span class="hljs-string">"one"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-attr">param</span> == <span class="hljs-number">2</span>) {
+      <span class="hljs-string">"two"</span>
+  } <span class="hljs-keyword">else</span> {
+      <span class="hljs-string">"three"</span>
+  }</code></pre></li>
+<li>Builder-style usage of methods that return Unit ???<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">arrayOfMinusOnes</span><span class="hljs-params">(size: <span class="hljs-type">Int</span>)</span></span>: IntArray {
+      <span class="hljs-keyword">return</span> IntArray(size).apply { fill(<span class="hljs-number">-1</span>) }
+  }</code></pre></li>
+<li>Single-expression functions <code>fun theAnswer() = 42</code></li>
+<li><p>Calling multiple method on an object instance <code>with</code></p>
+<pre class="hljs"><code>  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Turtle</span> </span>{
+      <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">penDown</span><span class="hljs-params">()</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">penUp</span><span class="hljs-params">()</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">turn</span><span class="hljs-params">(degrees: <span class="hljs-type">Double</span>)</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">forward</span><span class="hljs-params">(pixels: <span class="hljs-type">Double</span>)</span></span>
+  }
+
+  <span class="hljs-keyword">val</span> myTurtle = Turtle()
+  with(myTurtle) { <span class="hljs-comment">//draw a 100 pix square</span>
+      penDown()
+      <span class="hljs-keyword">for</span>(i <span class="hljs-keyword">in</span> <span class="hljs-number">1.</span><span class="hljs-number">.4</span>) {
+          forward(<span class="hljs-number">100.0</span>)
+          turn(<span class="hljs-number">90.0</span>)
+      }
+      penUp()
+  }</code></pre></li>
+<li>Java 7&#39;s try with resources ????<pre class="hljs"><code>  val stream = Files.<span class="hljs-keyword">new</span><span class="hljs-type">InputStream</span>(Paths.<span class="hljs-keyword">get</span>(<span class="hljs-string">"/some/file.txt"</span>))
+  stream.buffered().reader().use { reader -&gt;
+      println(reader.readText())
+  }</code></pre></li>
+<li><p>Convenient form for a generic function that requires the generic type information ???</p>
+<pre class="hljs"><code>  <span class="hljs-comment">//  public final class Gson {</span>
+  <span class="hljs-comment">//     ...</span>
+  <span class="hljs-comment">//     public &lt;T&gt; T fromJson(JsonElement json, Class&lt;T&gt; classOfT) throws    JsonSyntaxException {</span>
+  <span class="hljs-comment">//     ...</span>
+
+  <span class="hljs-keyword">inline</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-type">&lt;<span class="hljs-keyword">reified</span> T: Any&gt;</span> Gson.<span class="hljs-title">fromJson</span><span class="hljs-params">(json: <span class="hljs-type">JsonElement</span>)</span></span>: T =   <span class="hljs-keyword">this</span>.fromJson(json, T::<span class="hljs-class"><span class="hljs-keyword">class</span>.<span class="hljs-title">java</span>)</span></code></pre></li>
+</ul>
+<h1 id="coding-conventions"><a class="header-link" href="#coding-conventions"></a>Coding Conventions</h1>
+<ul class="list">
+<li><p>Colon</p>
+<ul class="list">
+<li>There is a space before colon where colon separates type and supertype and there&#39;s no space where colon separates instance and type<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Foo</span>&lt;<span class="hljs-type">out T : Any</span>&gt; : <span class="hljs-type">Bar {</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">(a: <span class="hljs-type">Int</span>)</span></span>: T
+}</code></pre></li>
+</ul>
+</li>
+<li><p>Class</p>
+<ul class="list">
+<li>each primary constructor argument is in a separate line with indentation</li>
+<li>superclass constructor call &amp; interfaces are in separate lines <pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Person</span>(
+  <span class="hljs-title">id</span>: <span class="hljs-type">Int</span>, 
+  <span class="hljs-title">name</span>: <span class="hljs-type">String</span>,
+  <span class="hljs-title">surname</span>: <span class="hljs-type">String</span>
+) : <span class="hljs-type">Human</span>(<span class="hljs-title">id</span>, <span class="hljs-title">name</span>),
+  <span class="hljs-type">KotlinMaker</span> {
+  // ...
+}</span></code></pre></li>
+</ul>
+</li>
+<li><p>Unit: If a function returns Unit, the return type should be omitted:</p>
+<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> { <span class="hljs-comment">// ": Unit" is omitted here</span>
+
+  }</code></pre></li>
+</ul>
+    </article>
+  </body>
+</html>
