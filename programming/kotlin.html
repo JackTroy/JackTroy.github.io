@@ -83,6 +83,9 @@
       println(<span class="hljs-name">x</span>)
   for (<span class="hljs-name">x</span> in <span class="hljs-number">9</span> downTo <span class="hljs-number">0</span> step <span class="hljs-number">3</span>)
       println(<span class="hljs-name">x</span>)</code></pre></li>
+<li><p>using <code>until</code>, in the following example, 10 is excluded</p>
+<pre class="hljs"><code>  for (<span class="hljs-name">i</span> in <span class="hljs-number">0</span>.until(<span class="hljs-number">10</span>))
+      print(<span class="hljs-name">i</span>)</code></pre></li>
 <li><p>using collection, <code>listOf</code></p>
 <pre class="hljs"><code>  <span class="hljs-selector-tag">var</span> fruits = listOf(<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"avocado"</span>)
   fruits<span class="hljs-selector-class">.filter</span> { it.startsWith(<span class="hljs-string">"a"</span>) }
@@ -157,8 +160,8 @@
 <ul class="list">
 <li>Lambda Expressions, below three achieve same functionality</li>
 <li>Note: before -&gt; is args, after -&gt; are expressions, last expression is     return value</li>
-<li>With function type but without annotation<pre class="hljs"><code>  var compare1: ((a: <span class="hljs-keyword">String, </span><span class="hljs-keyword">b: </span><span class="hljs-keyword">String) </span>-&gt; <span class="hljs-keyword">Boolean)? </span>= { a, <span class="hljs-keyword">b </span>-&gt;  a.length &gt; <span class="hljs-keyword">b.length </span>}</code></pre></li>
-<li>With annotation but without function type<pre class="hljs"><code>  <span class="hljs-selector-tag">var</span> compare2 = { <span class="hljs-selector-tag">a</span>: String, <span class="hljs-selector-tag">b</span>: String -&gt; <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.length</span> &gt; <span class="hljs-selector-tag">b</span><span class="hljs-selector-class">.length</span> }</code></pre></li>
+<li>With function type but without type annotation<pre class="hljs"><code>  var compare1: ((a: <span class="hljs-keyword">String, </span><span class="hljs-keyword">b: </span><span class="hljs-keyword">String) </span>-&gt; <span class="hljs-keyword">Boolean)? </span>= { a, <span class="hljs-keyword">b </span>-&gt;  a.length &gt; <span class="hljs-keyword">b.length </span>}</code></pre></li>
+<li>With type annotation but without function type<pre class="hljs"><code>  <span class="hljs-selector-tag">var</span> compare2 = { <span class="hljs-selector-tag">a</span>: String, <span class="hljs-selector-tag">b</span>: String -&gt; <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.length</span> &gt; <span class="hljs-selector-tag">b</span><span class="hljs-selector-class">.length</span> }</code></pre></li>
 <li>Ordinay function<pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">compare</span><span class="hljs-params">(a: <span class="hljs-type">String</span>, b: <span class="hljs-type">String</span>)</span></span>: <span class="hljs-built_in">Boolean</span>? = a.length &lt; b.length</code></pre></li>
 <li>Anonymous Functions, literaly function without the namefield<pre class="hljs"><code>  <span class="hljs-keyword">var</span> anonymous = <span class="hljs-function"><span class="hljs-title">fun</span><span class="hljs-params">(x: <span class="hljs-type">Int</span>, y: <span class="hljs-type">Int</span>)</span></span>: <span class="hljs-built_in">Int</span> {
       <span class="hljs-keyword">return</span> x + y
@@ -297,6 +300,40 @@
 <pre class="hljs"><code>  <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span></span> { <span class="hljs-comment">// ": Unit" is omitted here</span>
 
   }</code></pre></li>
+</ul>
+<h2 id="all-about-types"><a class="header-link" href="#all-about-types"></a>All about types</h2>
+<ul class="list">
+<li>Array<ul class="list">
+<li>def: <code>val a: Array&lt;String&gt;</code></li>
+<li>init: <code>a = arrayOf(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="all-about-classes"><a class="header-link" href="#all-about-classes"></a>All about classes</h2>
+<ul class="list">
+<li><p>If the object is an instance of a functional Java interface (i.e. a Java interface with a single abstract method), you can create it using a lambda expression prefixed with the type of the interface:</p>
+<pre class="hljs"><code>  <span class="hljs-comment">// frequently used in android dev</span>
+  val listener = ActionListener { <span class="hljs-built_in">println</span>(<span class="hljs-string">"clicked"</span>) }</code></pre></li>
+<li><p>A few way to fuck around with &quot;property must be initialized or abstarct&quot;</p>
+<ul class="list">
+<li>On primitive type, use delegated-properties <a href="https://kotlinlang.org/docs/reference/delegated-properties.html">https://kotlinlang.org/docs/reference/delegated-properties.html</a></li>
+<li>On non primitive type, use lateinit or delegated-properties shown above</li>
+<li>Just initialize it in the constructor or init block</li>
+</ul>
+</li>
+<li><p>To fuck with the fact that no static method in kotlin</p>
+<ul class="list">
+<li>use package-level functions</li>
+<li>declare a companion object inside your class, <a href="https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects">https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="not-known"><a class="header-link" href="#not-known"></a>Not Known</h2>
+<ul class="list">
+<li><code>!!</code></li>
+<li><code>this@MainActivity</code></li>
+<li><code>NormalActivity::class.java</code></li>
+<li><code>open</code> to define supertype</li>
 </ul>
     </article>
   </body>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="../assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="../assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><ul class="list">
+<li><p>The <code>Class.this</code> syntax is useful when you have a non-static nested class that needs to refer to its outer class&#39;s instance.</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>{
+      String name;
+
+      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span>(<span class="hljs-params">String name</span>)</span>{
+          <span class="hljs-keyword">this</span>.name = name;
+      }
+
+      <span class="hljs-keyword">class</span> <span class="hljs-title">Displayer</span> {
+          <span class="hljs-function">String <span class="hljs-title">getPersonName</span>(<span class="hljs-params"></span>) </span>{ 
+              <span class="hljs-keyword">return</span> Person.<span class="hljs-keyword">this</span>.name; 
+          }
+
+      }
+  }</code></pre></li>
+<li><p><code>SomeClass.class</code> gets the Class<SomeClass> type which you can use for programming using the reflection API, You can get the same type if you have an instance of the class using instance.getClass().</p>
+<pre class="hljs"><code>  <span class="hljs-comment">// in java</span>
+  Intent intent = new Intent(ActivityForJava.<span class="hljs-keyword">this</span>, NormalActivity.<span class="hljs-keyword">class</span>);
+  <span class="hljs-comment">// in kotlin</span>
+  <span class="hljs-keyword">val</span> intent = Intent(<span class="hljs-keyword">this</span><span class="hljs-symbol">@MainActivity</span>, NormalActivity::<span class="hljs-class"><span class="hljs-keyword">class</span>.<span class="hljs-title">java</span>)</span></code></pre></li>
+<li><p>anonymous class</p>
+<ul class="list">
+<li><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html">https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html</a></li>
+<li><a href="http://www.cnblogs.com/nerxious/archive/2013/01/25/2876489.html">http://www.cnblogs.com/nerxious/archive/2013/01/25/2876489.html</a></li>
+<li><p>def: They enable you to declare and instantiate a class at the same time.</p>
+<pre class="hljs"><code><span class="hljs-comment">// interface</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title">HelloWorld</span> {
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">greet</span>(<span class="hljs-params"></span>)</span>;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">greetSomeone</span>(<span class="hljs-params">String someone</span>)</span>;
+}
+
+<span class="hljs-comment">// anonymous classs</span>
+HelloWorld frenchGreeting = <span class="hljs-keyword">new</span> HelloWorld() {
+  String name = <span class="hljs-string">"tout le monde"</span>;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">greet</span>(<span class="hljs-params"></span>) </span>{
+      greetSomeone(<span class="hljs-string">"tout le monde"</span>);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">greetSomeone</span>(<span class="hljs-params">String someone</span>) </span>{
+      name = someone;
+      System.<span class="hljs-keyword">out</span>.println(<span class="hljs-string">"Salut "</span> + name);
+  }
+};</code></pre></li>
+<li><p>syntax: The anonymous class expression consists of the following:</p>
+<ul class="list">
+<li>The new operator</li>
+<li>The name of an interface to implement or a class to extend. In this example, the anonymous class is implementing the interface HelloWorld.</li>
+<li>Parentheses that contain the arguments to a constructor, just like a normal class instance creation expression. Note: When you implement an interface, there is no constructor, so you use an empty pair of parentheses, as in this example.</li>
+<li>A body, which is a class declaration body. More specifically, in the body, method declarations are allowed but statements are not.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+    </article>
+  </body>
+</html>
