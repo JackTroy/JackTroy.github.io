@@ -23,7 +23,8 @@
   Alt+<span class="hljs-keyword">Backspace </span>向前删除一个单词
   <span class="hljs-keyword">Shift+PgUp </span>将终端显示向上滚动
   <span class="hljs-keyword">Shift+PgDn </span>将终端显示向下滚动</code></pre></li>
-<li>通配符<pre class="hljs"><code>  字符  含义
+<li><p>通配符</p>
+<pre class="hljs"><code>  字符  含义
   *   匹配 <span class="hljs-number">0</span> 或多个字符
   ?   匹配任意一个字符
   [list]  匹配 list 中的任意单一字符
@@ -31,15 +32,15 @@
   [<span class="hljs-built_in">c1</span>-<span class="hljs-built_in">c2</span>] 匹配 <span class="hljs-built_in">c1</span>-<span class="hljs-built_in">c2</span> 中的任意单一字符 如：[<span class="hljs-number">0</span>-<span class="hljs-number">9</span>] [a-z]
   {<span class="hljs-keyword">string1,string2,...} </span>  匹配 <span class="hljs-keyword">string1 </span>或 <span class="hljs-keyword">string2 </span>(或更多)其 一字符串
   {<span class="hljs-built_in">c1</span>..c2}    匹配 <span class="hljs-built_in">c1</span>-<span class="hljs-built_in">c2</span> 中全部字符 如{<span class="hljs-number">1</span>..<span class="hljs-number">10</span>}</code></pre></li>
-<li>使用<code>man</code><ul class="list">
+<li><p>使用<code>man</code></p>
+<ul class="list">
 <li>通常 <code>man</code> 手册中的内容很多，你可能不太容易找到你想要的结果，不过幸运的是你可以在 <code>man</code> 中使用搜索<code>/&lt;你要搜索的关键字&gt;</code>，查找完毕后你可以使用<code>n</code>键切换到下一个关键字所在处，<code>shift+n</code>为上一个关键字所在处。使用<code>Space</code>（空格键）翻页，<code>Enter</code>（回车键）向下滚动一行，或者使用<code>j</code>,<code>k</code>（vim 编辑器的移动键）进行向前向后滚动一行。按下<code>h</code>键为显示使用帮助（因为 <code>man</code> 使用 <code>less</code> 作为阅读器，实为<code>less</code>工具的帮助），按下<code>q</code>退出。</li>
 </ul>
 </li>
 </ul>
 <h2 id="3-用户及文件权限管理"><a class="header-link" href="#3-用户及文件权限管理"></a>3 用户及文件权限管理</h2>
 <ul class="list">
-<li><p>who 命令其它常用参数</p>
-<pre class="hljs"><code>  参数 说明
+<li>who 命令其它常用参数<pre class="hljs"><code>  参数 说明
   -<span class="ruby">a 打印能打印的全部
 </span>  -<span class="ruby">d 打印死掉的进程
 </span>  -<span class="ruby">m 同am i,mom likes
