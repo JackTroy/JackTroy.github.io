@@ -11,7 +11,7 @@
   <body>
     <article class="markdown-body"><h2 id="自定义结构化知识"><a class="header-link" href="#自定义结构化知识"></a>自定义结构化知识</h2>
 <p>DAG，有向无环图结构，顶点为知识点，连接为继承关系
-每个知识点有具体笔记，预定markdown格式</p>
+每个知识点有或无具体笔记，预定markdown格式</p>
 <h2 id="客户端功能"><a class="header-link" href="#客户端功能"></a>客户端功能</h2>
 <ol class="list">
 <li>显示修改知识点结构</li>
@@ -40,42 +40,30 @@
 </li>
 <li><p>知识点数据结构</p>
 <ul class="list">
-<li><p>server</p>
-<ul class="list">
-<li>用户-&gt;根知识点[-&gt;知识点]</li>
-<li>知识点-&gt;文件夹(包含md文件 图片 样式)    </li>
-</ul>
-</li>
-<li><p>app</p>
-<ul class="list">
-<li>用户-&gt;根知识点[-&gt;知识点]</li>
-<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
-</ul>
+<li><p>xml定义知识点结构, 知识点的文件名</p>
+<pre class="hljs"><code>  &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"root"</span>&gt;
+      &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"algorithm"</span>&gt;
+          &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"sort"</span>&gt;
+      &lt;/<span class="hljs-built_in">point</span>&gt;
+      &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"os"</span>&gt;
+          &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"process"</span>&gt;
+      &lt;/<span class="hljs-built_in">point</span>&gt;
+  &lt;/<span class="hljs-built_in">point</span>&gt;</code></pre><pre class="hljs"><code>  <span class="hljs-section">&lt;point name="root"&gt;</span>
+      <span class="hljs-section">&lt;md path="./"&gt;</span>
+      <span class="hljs-section">&lt;pic path="./&gt;</span>
+  <span class="hljs-section">&lt;/poirnt&gt;</span></code></pre></li>
+<li><p>每一个用户一个文件夹，文件夹存放xml和md</p>
 </li>
 </ul>
 </li>
 </ol>
 <h3 id="服务端"><a class="header-link" href="#服务端"></a>服务端</h3>
 <ol class="list">
-<li><p>知识点数据结构</p>
-<ul class="list">
-<li>用户-&gt;根知识点[-&gt;知识点]</li>
-<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
-</ul>
-</li>
-<li><p>servlet登录,传输数据</p>
-</li>
+<li>servlet登录,传输数据</li>
 </ol>
 <h3 id="客户端"><a class="header-link" href="#客户端"></a>客户端</h3>
 <ol class="list">
-<li><p>知识点数据结构</p>
-<ul class="list">
-<li>用户-&gt;根知识点[-&gt;知识点]</li>
-<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
-</ul>
-</li>
-<li><p>markdown 展示 <a href="https://github.com/falnatsheh/MarkdownView">https://github.com/falnatsheh/MarkdownView</a></p>
-</li>
+<li>markdown 展示 <a href="https://github.com/falnatsheh/MarkdownView">https://github.com/falnatsheh/MarkdownView</a></li>
 </ol>
     </article>
   </body>
