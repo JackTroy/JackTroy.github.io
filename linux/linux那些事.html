@@ -47,6 +47,14 @@
 <li><p>设置apache2开机启动</p>
 <pre class="hljs"><code> sudo <span class="hljs-keyword">update</span>-rc.d apache2 <span class="hljs-keyword">disable</span>
  sudo <span class="hljs-keyword">update</span>-rc.d apache2 <span class="hljs-keyword">enable</span></code></pre></li>
+<li><p>关于<code>/sbin/nologin</code>和<code>/bin/false</code> </p>
+<ul class="list">
+<li><p>When /sbin/nologin is set as the shell, if user with that shell logs in, they&#39;ll get a polite message saying &#39;This account is currently not available.&#39; This message can be changed with the file /etc/nologin.txt.</p>
+</li>
+<li><p>/bin/false is just a binary that immediately exits, returning false, when it&#39;s called, so when someone who has false as shell logs in, they&#39;re immediately logged out when false exits. Setting the shell to /bin/true has the same effect of not allowing someone to log in but false is probably used as a convention over true since it&#39;s much better at conveying the concept that person doesn&#39;t have a shell.</p>
+</li>
+</ul>
+</li>
 </ol>
     </article>
   </body>

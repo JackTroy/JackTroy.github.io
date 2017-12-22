@@ -92,6 +92,16 @@ int a[<span class="hljs-number">6</span>] = { [<span class="hljs-number">4</span
   <span class="hljs-params">&lt;your code&gt;</span>
 
   <span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre></li>
+<li><p>Reading a file open without readflag, <code>read</code> will return -1 and set <code>errno</code> to be <code>EBADF</code>, integer 9</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">if</span> ((manager_file_fd = open(MANAGER_FILE, O_WRONLY | O_APPEND | O_CREAT)) == <span class="hljs-number">-1</span>) {
+      <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stdout</span>, <span class="hljs-string">"manager file open failed\n"</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+  }
+  <span class="hljs-keyword">if</span> (read(manager_file_metadata_fd, (<span class="hljs-keyword">char</span> *) temp, <span class="hljs-keyword">sizeof</span>(file_metadata)) 
+      != <span class="hljs-keyword">sizeof</span>(file_metadata)) {
+      <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stdout</span>, <span class="hljs-string">"read metadata from disk failed\n"</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+  }</code></pre></li>
 </ul>
     </article>
   </body>

@@ -10,6 +10,7 @@
   </head>
   <body>
     <article class="markdown-body"><h1 id="实验楼ubuntu课程笔记"><a class="header-link" href="#实验楼ubuntu课程笔记"></a>实验楼Ubuntu课程笔记</h1>
+<p><a href="https://www.shiyanlou.com/courses/1">https://www.shiyanlou.com/courses/1</a></p>
 <h2 id="2-基本概念及操作"><a class="header-link" href="#2-基本概念及操作"></a>2 基本概念及操作</h2>
 <ul class="list">
 <li>Linux 默认提供了 6 个纯命令行界面的 “terminal”（准确的说这里应该是 6 个 virtual consoles）来让用户登录。在物理机系统上你可以通过使用[Ctrl]+[Alt]+[F1]～[F6]进行切换，当你切换到其中一个终端后想要切换回图形界面，你可以按下[Ctrl]+[Alt]+[F7]</li>
@@ -40,13 +41,23 @@
 </ul>
 <h2 id="3-用户及文件权限管理"><a class="header-link" href="#3-用户及文件权限管理"></a>3 用户及文件权限管理</h2>
 <ul class="list">
-<li>who 命令其它常用参数<pre class="hljs"><code>  参数 说明
+<li><code>whoami</code> 查看打开当前伪终端的用户的用户名 </li>
+<li><code>who</code> 命令其它常用参数<pre class="hljs"><code>  参数 说明
   -<span class="ruby">a 打印能打印的全部
 </span>  -<span class="ruby">d 打印死掉的进程
 </span>  -<span class="ruby">m 同am i,mom likes
 </span>  -<span class="ruby">q 打印当前登录用户数及用户名
 </span>  -<span class="ruby">u 打印当前登录用户登录信息
 </span>  -<span class="ruby">r 打印运行等级</span></code></pre></li>
+<li><p><code>su</code>，<code>su-</code> 与 <code>sudo</code></p>
+<p>  <code>su &lt;user&gt;</code> 可以切换到用户 user，执行时需要输入目标用户的密码，<code>sudo &lt;cmd&gt;</code> 可以以特权级别运行 cmd 命令，需要当前用户属于 sudo 组，且需要输入当前用户的密码。<code>su - &lt;user&gt;</code> 命令也是切换用户，同时环境变量也会跟着改变成目标用户的环境变量。</p>
+</li>
+<li><p>用户组</p>
+<ul class="list">
+<li>使用 <code>group jacktroy</code> 命令获知当前用户所属的用户组</li>
+<li>查看 <code>/etc/group</code> 文件, 文件格式<code>group_name:password:GID:user_list</code></li>
+</ul>
+</li>
 <li>创建用户<ul class="list">
 <li><code>sudo adduser anna</code>, 这个命令不但可以添加用户到系统，同时也会默认为新用户创建 home 目录</li>
 <li><code>su -l anna</code>, 切换登录用户</li>

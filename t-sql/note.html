@@ -10,7 +10,8 @@
   </head>
   <body>
     <article class="markdown-body"><ul class="list">
-<li>Following is the order in which SQL elements get executed  as this will change the way we can optimize SELECT queries:<ol class="list">
+<li><p>Following is the order in which SQL elements get executed  as this will change the way we can optimize SELECT queries:</p>
+<ol class="list">
 <li>FROM Clause</li>
 <li>ON</li>
 <li>OUTER</li>
@@ -23,6 +24,16 @@
 <li>TOP</li>
 </ol>
 </li>
+<li><p>sql server on ubuntu <a href="https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu">https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu</a></p>
+</li>
+<li><p>java sql server <a href="https://www.microsoft.com/en-us/sql-server/developer-get-started/java/ubuntu/step/2.html">https://www.microsoft.com/en-us/sql-server/developer-get-started/java/ubuntu/step/2.html</a></p>
+</li>
+<li><p>to show all databases</p>
+<pre class="hljs"><code>  <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">name</span>, database_id, create_date  <span class="hljs-keyword">FROM</span> sys.databases ;</code></pre></li>
+<li><p>to show all tables from databases</p>
+<pre class="hljs"><code>  // <span class="hljs-keyword">show</span> all
+  <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> INFORMATION_SCHEMA.TABLES <span class="hljs-keyword">WHERE</span> TABLE_TYPE=<span class="hljs-string">'BASE TABLE'</span>
+  // <span class="hljs-keyword">SELECT</span> TABLE_NAME <span class="hljs-keyword">FROM</span> &lt;DATABASE_NAME&gt;.INFORMATION_SCHEMA.TABLES <span class="hljs-keyword">WHERE</span> TABLE_TYPE = <span class="hljs-string">'BASE TABLE'</span></code></pre></li>
 </ul>
     </article>
   </body>

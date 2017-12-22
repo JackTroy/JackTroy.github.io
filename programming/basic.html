@@ -14,6 +14,18 @@
 <li><em>Construct first, code then, if you are serious about the project; you can fuck with the project you don&#39;t care about it. Do take exactly the same attitude throughout the whole lifecycle of your project; if you want to change your attitude to it, then restart the project from stratch</em></li>
 <li><em>A parameter is the variable which is part of the method’s signature (method declaration). An argument is an expression used when calling the method.</em></li>
 <li><em>race condition, if there are multiple threads writing the same object, use lock!</em></li>
+<li><em>careful with multiple bool expressions</em><pre class="hljs"><code>  // consider the following `if (f-&gt;f_indirect == <span class="hljs-number">0</span> &amp;&amp; alloc)`,
+  // the corresponding <span class="hljs-keyword">else</span> could be in these situation
+  // `f-&gt;f_indirect != <span class="hljs-number">0</span> &amp;&amp; alloc`
+  // <span class="hljs-literal">or</span> `f-&gt;f_indirect == <span class="hljs-number">0</span> &amp;&amp; !alloc`
+  // <span class="hljs-literal">or</span> `f-&gt;f_indirect != <span class="hljs-number">0</span> &amp;&amp; !alloc`
+  <span class="hljs-keyword">if</span> (f-&gt;f_indirect == <span class="hljs-number">0</span> &amp;&amp; alloc) {
+      ...
+  }
+  <span class="hljs-keyword">else</span> {
+      ...
+  }
+  // so must be careful when playing with multiple bool expressions</code></pre></li>
 </ul>
     </article>
   </body>

@@ -311,6 +311,21 @@
 </ul>
 <h2 id="all-about-classes"><a class="header-link" href="#all-about-classes"></a>All about classes</h2>
 <ul class="list">
+<li><p>To write a anonymous class in kotlin, use object</p>
+<pre class="hljs"><code>  <span class="hljs-comment">// here TextWatcher is a interface with 3 functions</span>
+  editText.addTextChangedListener(<span class="hljs-keyword">object</span> : TextWatcher {
+          <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">beforeTextChanged</span><span class="hljs-params">(charSequence: <span class="hljs-type">CharSequence</span>, i: <span class="hljs-type">Int</span>, i1: <span class="hljs-type">Int</span>, i2: <span class="hljs-type">Int</span>)</span></span> {
+
+          }
+
+          <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onTextChanged</span><span class="hljs-params">(charSequence: <span class="hljs-type">CharSequence</span>, i: <span class="hljs-type">Int</span>, i1: <span class="hljs-type">Int</span>, i2: <span class="hljs-type">Int</span>)</span></span> {
+
+          }
+
+          <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">afterTextChanged</span><span class="hljs-params">(editable: <span class="hljs-type">Editable</span>)</span></span> {
+
+          }
+      })</code></pre></li>
 <li><p>If the object is an instance of a functional Java interface (i.e. a Java interface with a single abstract method), you can create it using a lambda expression prefixed with the type of the interface:</p>
 <pre class="hljs"><code>  <span class="hljs-comment">// frequently used in android dev</span>
   val listener = ActionListener { <span class="hljs-built_in">println</span>(<span class="hljs-string">"clicked"</span>) }</code></pre></li>
