@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>自定义结构化知识</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h2 id="自定义结构化知识"><a class="header-link" href="#自定义结构化知识"></a>自定义结构化知识</h2>
+<p>DAG，有向无环图结构，顶点为知识点，连接为继承关系
+每个知识点有具体笔记，预定markdown格式</p>
+<h2 id="客户端功能"><a class="header-link" href="#客户端功能"></a>客户端功能</h2>
+<ol class="list">
+<li>显示修改知识点结构</li>
+<li>显示修改知识点内容(markdown)</li>
+<li>同步知识点</li>
+</ol>
+<h2 id="实现细节"><a class="header-link" href="#实现细节"></a>实现细节</h2>
+<h3 id="交互"><a class="header-link" href="#交互"></a>交互</h3>
+<ol class="list">
+<li><p>登录 </p>
+<ul class="list">
+<li><a href="http://blog.csdn.net/lablenet/article/details/47687363">http://blog.csdn.net/lablenet/article/details/47687363</a></li>
+<li>单客户登录</li>
+</ul>
+</li>
+<li><p>登录保持</p>
+<ul class="list">
+<li>session <a href="http://blog.csdn.net/u012995856/article/details/54016884">http://blog.csdn.net/u012995856/article/details/54016884</a></li>
+<li>token 
+<a href="https://whuhan2013.github.io/blog/2016/07/21/android-token-learn/">https://whuhan2013.github.io/blog/2016/07/21/android-token-learn/</a> 
+<a href="http://sevennight.cc/2016/07/19/auto_login_impl.html">http://sevennight.cc/2016/07/19/auto_login_impl.html</a>
+<a href="http://www.jianshu.com/p/b4cf771e570e">http://www.jianshu.com/p/b4cf771e570e</a></li>
+</ul>
+</li>
+<li><p>数据传输, 验证后直接传压缩文件夹(包含md文件 图片 样式)</p>
+</li>
+<li><p>知识点数据结构</p>
+<ul class="list">
+<li><p>server</p>
+<ul class="list">
+<li>用户-&gt;根知识点[-&gt;知识点]</li>
+<li>知识点-&gt;文件夹(包含md文件 图片 样式)    </li>
+</ul>
+</li>
+<li><p>app</p>
+<ul class="list">
+<li>用户-&gt;根知识点[-&gt;知识点]</li>
+<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="服务端"><a class="header-link" href="#服务端"></a>服务端</h3>
+<ol class="list">
+<li><p>知识点数据结构</p>
+<ul class="list">
+<li>用户-&gt;根知识点[-&gt;知识点]</li>
+<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
+</ul>
+</li>
+<li><p>servlet登录,传输数据</p>
+</li>
+</ol>
+<h3 id="客户端"><a class="header-link" href="#客户端"></a>客户端</h3>
+<ol class="list">
+<li><p>知识点数据结构</p>
+<ul class="list">
+<li>用户-&gt;根知识点[-&gt;知识点]</li>
+<li>知识点-&gt;文件夹(包含md文件 图片 样式)</li>
+</ul>
+</li>
+<li><p>markdown 展示 <a href="https://github.com/falnatsheh/MarkdownView">https://github.com/falnatsheh/MarkdownView</a></p>
+</li>
+</ol>
+    </article>
+  </body>
+</html>
