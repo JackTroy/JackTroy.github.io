@@ -25,7 +25,7 @@
 <li><img src="./git-storage.3.dot.svg" alt="commit"></li>
 </ul>
 </li>
-<li>References, heads, branches节点类似便利贴，此类节点&quot;贴&quot;在commit节点上，是整个DAG图上唯一可以改动的地方，并且可以随便移动，同时此类节点并不存储在git历史中，也不能在仓库之间直接转移，此类节点也可以比作书签，表达的意思是“我在这里干活”</li>
+<li>References, heads, branches节点类似便利贴，此类节点&quot;贴&quot;在commit节点上，是整个DAG图上唯一可以进行增加节点的地方，并且可以随便移动，同时此类节点并不存储在git历史中，也不能在仓库之间直接转移，此类节点也可以比作书签，表达的意思是“我在这里干活”</li>
 <li>每git commit一次，就会在DAG上增加一个节点， 同时把“便利贴”——现在正在工作的Branch节点指向新的commit节点</li>
 <li>HEAD是一个特殊的ref节点，这个ref节点指向当前正在工作的Branch节点<ul class="list">
 <li><img src="./git-storage.4.dot.svg" alt="ref"></li>

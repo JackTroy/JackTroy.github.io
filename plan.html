@@ -41,17 +41,23 @@
 <li><p>知识点数据结构</p>
 <ul class="list">
 <li><p>xml定义知识点结构, 知识点的文件名</p>
-<pre class="hljs"><code>  &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"root"</span>&gt;
-      &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"algorithm"</span>&gt;
-          &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"sort"</span>&gt;
-      &lt;/<span class="hljs-built_in">point</span>&gt;
-      &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"os"</span>&gt;
-          &lt;<span class="hljs-built_in">point</span> name=<span class="hljs-string">"process"</span>&gt;
-      &lt;/<span class="hljs-built_in">point</span>&gt;
-  &lt;/<span class="hljs-built_in">point</span>&gt;</code></pre><pre class="hljs"><code>  <span class="hljs-section">&lt;point name="root"&gt;</span>
-      <span class="hljs-section">&lt;md path="./"&gt;</span>
-      <span class="hljs-section">&lt;pic path="./&gt;</span>
-  <span class="hljs-section">&lt;/poirnt&gt;</span></code></pre></li>
+<pre class="hljs"><code>  <span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">"1.0"</span> encoding=<span class="hljs-string">"UTF-8"</span> <span class="hljs-meta">?&gt;</span></span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"root"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"algorithm"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"os"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span></code></pre><pre class="hljs"><code>  <span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">"1.0"</span> encoding=<span class="hljs-string">"UTF-8"</span> <span class="hljs-meta">?&gt;</span></span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">kps</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"root"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">md</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"./root.md"</span> /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">pic</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"./root_1.jpg"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"algorithm"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">md</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"./algorithm.md"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">kp</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"os"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">md</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"./algorithm.md"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">kp</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">kps</span>&gt;</span></code></pre></li>
 <li><p>每一个用户一个文件夹，文件夹存放xml和md</p>
 </li>
 </ul>

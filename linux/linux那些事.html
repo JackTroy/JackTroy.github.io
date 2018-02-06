@@ -55,6 +55,31 @@
 </li>
 </ul>
 </li>
+<li><p>ubuntu 使用xrandr 双屏显示</p>
+<ul class="list">
+<li>首先直接运行xrandr命令，查看设备的相关信息</li>
+<li><p>设置双屏幕显示：</p>
+<pre class="hljs"><code>  (<span class="hljs-number">1</span>)打开外接显示器，双屏幕显示相同的内容--克隆，（auto为最高分辨率）
+
+      xrandr --output VGA<span class="hljs-number">-0</span> --same-as DVI-D<span class="hljs-number">-0</span> --auto
+
+  (<span class="hljs-number">2</span>）若要指定外接显示器的分辨率可以使用下面的命令（<span class="hljs-number">1280</span>*<span class="hljs-number">1024</span>）：
+
+       xrandr --output VGA<span class="hljs-number">-0</span> --same-as DVI-D<span class="hljs-number">-0</span> --mode <span class="hljs-number">1280</span>x1024
+
+  (<span class="hljs-number">3</span>）打开外接显示器，设置为右侧扩展
+
+       xrandr --output VGA<span class="hljs-number">-0</span> --right-of DVI-D<span class="hljs-number">-0</span> --auto
+
+  (<span class="hljs-number">4</span>)关闭显示器
+
+       xrandr --output VGA<span class="hljs-number">-0</span> --off
+
+  (<span class="hljs-number">5</span>)打开VGA<span class="hljs-number">-0</span>接口显示器，关闭DVI-D<span class="hljs-number">-0</span>接口显示器
+
+      xrandr --output VGA<span class="hljs-number">-0</span> --auto --output DVI-D<span class="hljs-number">-0</span> --off</code></pre></li>
+</ul>
+</li>
 </ol>
     </article>
   </body>
